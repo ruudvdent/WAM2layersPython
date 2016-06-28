@@ -5,8 +5,8 @@ Created on Thu Jun 16 13:24:45 2016
 @author: Ent00002
 """
 #delayed runs
-#import time
-#time.sleep(18250)
+import time
+time.sleep(7500)
 
 #%% Import libraries
 
@@ -127,7 +127,7 @@ for i in range(len(years)):
                 Sa_time_down = loading_STT['Sa_time_down']
             
             # load the total moisture data
-            loading_FS = sio.loadmat(datapath[2])
+            loading_FS = sio.loadmat(datapath[2],verify_compressed_data_integrity=False)
             Fa_E_top = loading_FS['Fa_E_top']
             Fa_N_top = loading_FS['Fa_N_top']
             Fa_E_down = loading_FS['Fa_E_down']

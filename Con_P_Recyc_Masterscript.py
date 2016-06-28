@@ -6,7 +6,7 @@ Created on Thu Jun 16 13:24:45 2016
 """
 #delayed runs
 #import time
-#time.sleep(4140)
+#time.sleep(500)
 
 #%% Import libraries
 
@@ -23,7 +23,7 @@ warnings.filterwarnings("ignore")
 from timeit import default_timer as timer
 
 #%% BEGIN OF INPUT1 (FILL THIS IN)
-years = np.arange(2002,2009) #fill in the years
+years = np.arange(2001,2009) #fill in the years
 yearpart = np.arange(0,366) # for a full (leap)year fill in np.arange(0,366)
 boundary = 8 # with 8 the vertical separation is at 812.83 hPa for surface pressure = 1031.25 hPa, which corresponds to k=47 (ERA-Interim)
 divt = 24 # division of the timestep, 24 means a calculation timestep of 6/24 = 0.25 hours (numerical stability purposes)
@@ -37,7 +37,7 @@ isglobal = 1 # fill in 1 for global computations (i.e. Earth round), fill in 0 f
 
 # the lake numbers below belong to the ERA-Interim data on 1.5 degree starting at Northern latitude 79.5 and longitude -180
 lake_mask_1 = np.array([9,9,9,12,12,21,21,22,22,23,24,25,23,23,25,25,53,54,61,23,24,23,24,25,27,22,23,24,25,26,27,28,22,25,26,27,28,23,23,12,18])
-lake_mask_2 = np.array([39,40,41,43,44,61,62,62,63,62,62,62,65,66,65,66,142,142,143,152,152,153,153,153,153,154,154,154,154,154,154,154,155,155,155,155,155,159,160,144,55])
+lake_mask_2 = np.array([120+19,120+40,120+41,120+43,120+44,120+61,120+62,120+62,120+63,120+62,120+62,120+62,120+65,120+66,120+65,120+66,142-120,142-120,143-120,152-120,152-120,153-120,153-120,153-120,153-120,154-120,154-120,154-120,154-120,154-120,154-120,154-120,155-120,155-120,155-120,155-120,155-120,159-120,160-120,144-120,120+55])
 lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arrays of the matlab model
 
 # obtain the constants
@@ -48,7 +48,7 @@ latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_grid
 Region = lsm
 Kvf = 3 # vertical dispersion factor (advection only is 0, dispersion the same size of the advective flux is 1, for stability don't make this more than 3)
 timetracking = 1 # 0 for not tracking time and 1 for tracking time
-veryfirstrun = 0 # type '1' if no run has been done before from which can be continued, otherwise type '0'
+veryfirstrun = 1 # type '1' if no run has been done before from which can be continued, otherwise type '0'
 
 #END OF INPUT
 
@@ -743,7 +743,7 @@ for i in range(len(years)):
             Sa_track_top,Sa_track_down,north_loss,south_loss,down_to_top,top_to_down,water_lost = get_Sa_track_forward(latitude,longitude,count_time,divt,Kvf,Region,Fa_E_top,Fa_N_top,Fa_E_down,Fa_N_down,
                                        Fa_Vert,E,P,W_top,W_down,Sa_track_top_last,Sa_track_down_last)   
         elif timetracking == 1:
-            loading_STT = sio.loadmat(datapath[2])
+            loading_STT = sio.loadmat(datapath[2],verify_compressed_data_integrity=False)
             Sa_time_top = loading_STT['Sa_time_top'] # [seconds]
             Sa_time_down = loading_STT['Sa_time_down']
             Sa_time_top_last_scheef = Sa_time_top[-1,:,:]

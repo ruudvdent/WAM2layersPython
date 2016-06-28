@@ -5,6 +5,9 @@ I might be able to offer some kind of support if it is in my interest as well, b
 
 Released under the GNU General Public License
 
+WAM 2.4.02 | 28-6-2016
+- fixed a small bug to "lake_mask" so that lakes are identified correctly
+
 WAM 2.4.01 | 24-6-2016
 - Python version of the model with credits to Tolga Cömert and Niek van de Koppel
 - forward tracking only, backward tracking will follow soon
