@@ -5,8 +5,8 @@ Created on Thu Jun 16 13:24:45 2016
 @author: Ent00002
 """
 #delayed runs
-import time
-time.sleep(7500)
+#import time
+#time.sleep(7500)
 
 #%% Import libraries
 
@@ -122,7 +122,7 @@ for i in range(len(years)):
             water_lost = loading_ST['water_lost']
             Sa_track = Sa_track_top + Sa_track_down
             if timetracking == 1:
-                loading_STT = sio.loadmat(datapath[1])
+                loading_STT = sio.loadmat(datapath[1],verify_compressed_data_integrity=False)
                 Sa_time_top = loading_STT['Sa_time_top']
                 Sa_time_down = loading_STT['Sa_time_down']
             

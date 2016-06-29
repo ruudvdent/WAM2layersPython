@@ -1,9 +1,12 @@
 RELEASE NOTES
 
 Main developer of the code Ruud van der Ent (r.j.vanderent@uu.nl). Please let me know when you intend to use this code for research, 
-I might be able to offer some kind of support if it is in my interest as well, but I cannot guarantee to do any kind of troubleshooting for free
+I might be able to offer some kind of support if it is in my interest as well, but I cannot guarantee to do any kind of troubleshooting for free.
 
 Released under the GNU General Public License
+
+WAM 2.4.03 | 28-6-2016
+- added another 'verify_compressed_data_integrity=False' statement. Without one could encounter errors
 
 WAM 2.4.02 | 28-6-2016
 - fixed a small bug to "lake_mask" so that lakes are identified correctly
