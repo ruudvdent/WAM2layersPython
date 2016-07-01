@@ -46,94 +46,94 @@ Region = lsm
 #%% Datapaths (FILL THIS IN)
 
 def data_path(years,timetracking):
-    load_data_pypm = 'outputdata/P_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat'
+    load_data_pypm = 'outputdata/E_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat'
     load_data_hf = 'outputdata/Hor_Fluxes_full' + str(years[0]) + '-' + str(years[-1]) + '.mat'
-    return load_data_pypm,load_data_hf
+    return load_data_pypm, load_data_hf
 
-#%% Calculations
+#%%  Calculations 
 
 # loading vertical fluxes and storages
 datapath = data_path(years,timetracking)
-loading_PT2SC = sio.loadmat(datapath[0])
-E_per_year_per_month = loading_PT2SC['E_per_year_per_month']
-P_track_per_year_per_month = loading_PT2SC['P_track_per_year_per_month']
-P_per_year_per_month = loading_PT2SC['P_per_year_per_month']
-Sa_track_down_per_year_per_month = loading_PT2SC['Sa_track_down_per_year_per_month']
-Sa_track_top_per_year_per_month = loading_PT2SC['Sa_track_top_per_year_per_month']
-Sa_time_down_per_year_per_month = loading_PT2SC['Sa_time_down_per_year_per_month']
-Sa_time_top_per_year_per_month = loading_PT2SC['Sa_time_top_per_year_per_month']
-P_time_per_year_per_month = loading_PT2SC['P_time_per_year_per_month']
-W_down_per_year_per_month = loading_PT2SC['W_down_per_year_per_month']
-W_top_per_year_per_month = loading_PT2SC['W_top_per_year_per_month']
-north_loss_per_year_per_month = loading_PT2SC['north_loss_per_year_per_month']
-south_loss_per_year_per_month = loading_PT2SC['south_loss_per_year_per_month']
-down_to_top_per_year_per_month = loading_PT2SC['down_to_top_per_year_per_month']
-top_to_down_per_year_per_month = loading_PT2SC['top_to_down_per_year_per_month']
-water_lost_per_year_per_month = loading_PT2SC['water_lost_per_year_per_month']
+loading_pypm = sio.loadmat(datapath[0])
+E_per_year_per_month = loading_pypm['E_per_year_per_month']
+E_track_per_year_per_month = loading_pypm['E_track_per_year_per_month']
+P_per_year_per_month = loading_pypm['P_per_year_per_month']
+Sa_track_down_per_year_per_month = loading_pypm['Sa_track_down_per_year_per_month']
+Sa_track_top_per_year_per_month = loading_pypm['Sa_track_top_per_year_per_month']
+Sa_time_down_per_year_per_month = loading_pypm['Sa_time_down_per_year_per_month']
+Sa_time_top_per_year_per_month = loading_pypm['Sa_time_top_per_year_per_month']
+E_time_per_year_per_month = loading_pypm['E_time_per_year_per_month']
+W_down_per_year_per_month = loading_pypm['W_down_per_year_per_month']
+W_top_per_year_per_month = loading_pypm['W_top_per_year_per_month']
+north_loss_per_year_per_month = loading_pypm['north_loss_per_year_per_month']
+south_loss_per_year_per_month = loading_pypm['south_loss_per_year_per_month']
+down_to_top_per_year_per_month =  loading_pypm['down_to_top_per_year_per_month']
+top_to_down_per_year_per_month = loading_pypm['top_to_down_per_year_per_month']
+water_lost_per_year_per_month = loading_pypm['water_lost_per_year_per_month']
 
 E_total = np.squeeze(np.sum(np.sum(E_per_year_per_month,axis = 0), axis = 0))
-P_c_total = np.squeeze(np.sum(np.sum(P_track_per_year_per_month,axis = 0), axis = 0))
+E_c_total = np.squeeze(np.sum(np.sum(E_track_per_year_per_month,axis = 0), axis = 0))
 P_total = np.squeeze(np.sum(np.sum(P_per_year_per_month,axis = 0), axis = 0))
 
 # loading horizontal fluxes
-#loading_HF2S = sio.loadmat(datapath[1])
-#Fa_E_down_per_year_per_month = loading_HF2S['Fa_E_down_per_year_per_month']
-#Fa_E_top_per_year_per_month = loading_HF2S['Fa_E_top_per_year_per_month']
-#Fa_N_down_per_year_per_month = loading_HF2S['Fa_N_down_per_year_per_month']
-#Fa_N_top_per_year_per_month = loading_HF2S['Fa_N_top_per_year_per_month'] 
-#Fa_Vert_per_year_per_month = loading_HF2S['Fa_Vert_per_year_per_month']
-#
-#Fa_E_down_total = np.squeeze(np.sum(np.sum(Fa_E_down_per_year_per_month,axis = 0),axis = 0))
-#Fa_E_top_total = np.squeeze(np.sum(np.sum(Fa_E_top_per_year_per_month,axis = 0),axis = 0))
-#Fa_N_down_total = np.squeeze(np.sum(np.sum(Fa_N_down_per_year_per_month,axis = 0),axis = 0))
-#Fa_N_top_total = np.squeeze(np.sum(np.sum(Fa_N_top_per_year_per_month,axis = 0),axis = 0))
-#Fa_E_total = Fa_E_down_total + Fa_E_top_total
-#Fa_N_total = Fa_N_down_total + Fa_N_top_total
-#
-## annual average fluxes per unit width (m3/m/a)
-#Fa_N_total_m2a = np.zeros(np.shape(Fa_N_total))
-#Fa_N_down_total_m2a = np.zeros(np.shape(Fa_N_down_total))
-#Fa_N_top_total_m2a = np.zeros(np.shape(Fa_N_top_total))
-#
-#for i in range(len(latitude)):
-#    Fa_N_total_m2a[i,:] = (Fa_N_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
-#    Fa_N_down_total_m2a[i,:] = (Fa_N_down_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
-#    Fa_N_top_total_m2a[i,:] = (Fa_N_top_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
-#
-#Fa_E_total_m2a = (Fa_E_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
-#Fa_E_down_total_m2a = (Fa_E_down_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
-#Fa_E_top_total_m2a = (Fa_E_top_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
-#
-## fluxes for plotting
-#FluxDispMatSmall = np.zeros([5,5])
-#FluxDispMatSmall[3,2] = 1
-#FluxDispMat = np.tile(FluxDispMatSmall,[np.floor(len(latitude)/5+1),np.floor(len(longitude)/5)+1])
-#FluxDispMat = FluxDispMat[:len(latitude),:len(longitude)]
-#
-#Fa_E_total_m2a_part = Fa_E_total_m2a * FluxDispMat
-#Fa_N_total_m2a_part = Fa_N_total_m2a * FluxDispMat
-#Fa_E_down_total_m2a_part = Fa_E_down_total_m2a * FluxDispMat
-#Fa_N_down_total_m2a_part = Fa_N_down_total_m2a * FluxDispMat
-#Fa_E_top_total_m2a_part = Fa_E_top_total_m2a * FluxDispMat
-#Fa_N_top_total_m2a_part = Fa_N_top_total_m2a * FluxDispMat
+loading_HF2S = sio.loadmat(datapath[1])
+Fa_E_down_per_year_per_month = loading_HF2S['Fa_E_down_per_year_per_month']
+Fa_E_top_per_year_per_month = loading_HF2S['Fa_E_top_per_year_per_month']
+Fa_N_down_per_year_per_month = loading_HF2S['Fa_N_down_per_year_per_month']
+Fa_N_top_per_year_per_month = loading_HF2S['Fa_N_top_per_year_per_month'] 
+Fa_Vert_per_year_per_month = loading_HF2S['Fa_Vert_per_year_per_month']
+
+Fa_E_down_total = np.squeeze(np.sum(np.sum(Fa_E_down_per_year_per_month,axis = 0),axis = 0))
+Fa_E_top_total = np.squeeze(np.sum(np.sum(Fa_E_top_per_year_per_month,axis = 0),axis = 0))
+Fa_N_down_total = np.squeeze(np.sum(np.sum(Fa_N_down_per_year_per_month,axis = 0),axis = 0))
+Fa_N_top_total = np.squeeze(np.sum(np.sum(Fa_N_top_per_year_per_month,axis = 0),axis = 0))
+Fa_E_total = Fa_E_down_total + Fa_E_top_total
+Fa_N_total = Fa_N_down_total + Fa_N_top_total
+
+# annual average fluxes per unit width (m3/m/a)
+Fa_N_total_m2a = np.zeros(np.shape(Fa_N_total))
+Fa_N_down_total_m2a = np.zeros(np.shape(Fa_N_down_total))
+Fa_N_top_total_m2a = np.zeros(np.shape(Fa_N_top_total))
+
+for i in range(len(latitude)):
+    Fa_N_total_m2a[i,:] = (Fa_N_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
+    Fa_N_down_total_m2a[i,:] = (Fa_N_down_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
+    Fa_N_top_total_m2a[i,:] = (Fa_N_top_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
+
+Fa_E_total_m2a = (Fa_E_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
+Fa_E_down_total_m2a = (Fa_E_down_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
+Fa_E_top_total_m2a = (Fa_E_top_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
+
+# fluxes for plotting
+FluxDispMatSmall = np.zeros([5,5])
+FluxDispMatSmall[3,2] = 1
+FluxDispMat = np.tile(FluxDispMatSmall,[np.floor(len(latitude)/5+1),np.floor(len(longitude)/5)+1])
+FluxDispMat = FluxDispMat[:len(latitude),:len(longitude)]
+
+Fa_E_total_m2a_part = Fa_E_total_m2a * FluxDispMat
+Fa_N_total_m2a_part = Fa_N_total_m2a * FluxDispMat
+Fa_E_down_total_m2a_part = Fa_E_down_total_m2a * FluxDispMat
+Fa_N_down_total_m2a_part = Fa_N_down_total_m2a * FluxDispMat
+Fa_E_top_total_m2a_part = Fa_E_top_total_m2a * FluxDispMat
+Fa_N_top_total_m2a_part = Fa_N_top_total_m2a * FluxDispMat
 
 # recycling metrics
-rho_c_total = P_c_total / P_total
+eps_c_total = E_c_total / E_total
 
 #only on land
 E_landtotal = np.array(E_total)
 E_landtotal[Region == 0] = 0
 P_landtotal = np.array(P_total)
 P_landtotal[Region == 0] = 0
-P_c_landtotal = np.array(P_c_total)
-P_c_landtotal[Region == 0] = 0
-rho_c_landtotal = np.array(rho_c_total)
-rho_c_landtotal[Region == 0] = -0.1
-rho_c_abslandtotal = np.sum(np.sum(P_c_landtotal, axis = 0))/np.sum(np.sum(P_landtotal, axis = 0))
+E_c_landtotal = np.array(E_c_total)
+E_c_landtotal[Region == 0] = 0
+eps_c_landtotal = np.array(eps_c_total)
+eps_c_landtotal[Region == 0] = -0.1
+eps_c_abslandtotal = np.sum(np.sum(E_c_landtotal, axis = 0))/np.sum(np.sum(E_landtotal, axis = 0))
 
 #what happens
-Test_P_c = np.sum(P_c_total)
-Test_E_land = np.sum(E_landtotal)
+Test_E_c = np.sum(E_c_total)
+Test_P_land = np.sum(P_landtotal)
 Mean_down_to_top = np.squeeze(np.sum(np.sum(down_to_top_per_year_per_month, axis = 0), axis = 0))
 Test_down_to_top = np.sum(Mean_down_to_top)
 Mean_top_to_down = np.squeeze(np.sum(np.sum(top_to_down_per_year_per_month, axis = 0), axis = 0))
@@ -141,8 +141,8 @@ Test_top_to_down = np.sum(Mean_top_to_down)
 Mean_water_lost = np.squeeze(np.sum(np.sum(water_lost_per_year_per_month, axis = 0), axis = 0))
 Test_water_lost = np.sum(Mean_water_lost)
 Test_north_loss = np.sum(north_loss_per_year_per_month)
-Test_south_loss = np.sum(south_loss_per_year_per_month)
-Isthis100procent = (Test_P_c + Test_water_lost + Test_north_loss + Test_south_loss) / Test_E_land
+Test_south_loss = np.sum(south_loss_per_year_per_month) # gives a nan, up for investigation!
+Isthis100procent = (Test_E_c + Test_water_lost + Test_north_loss + Test_south_loss) / Test_P_land
 print Isthis100procent*100
 
 #just to know
@@ -188,10 +188,11 @@ cmap = LinearSegmentedColormap.from_list('mycmap', [(0 / vmax, 'white'),
 
 #%% Plots
 #plt.close('all')
-####################### CONTOUR PLOT
 
-plt.figure(1) # nice projections are 'cea', 'cyl', 'eck4' and 'robin', however only 'cea' and 'cyl' allows for not showing the entire world
-map = Basemap(projection='cyl',lat_0=0,lon_0=0,
+################### CONTOUR PLOT
+
+plt.figure() # nice projections are 'cea', 'cyl', 'eck4' and 'robin', however only 'cea' and 'cyl' allows for not showing the entire world
+map = Basemap(projection='robin',lat_0=0,lon_0=0,
               llcrnrlon=-180, llcrnrlat=-78,
               urcrnrlon=180, urcrnrlat=78)
 map.drawcoastlines(linewidth=0.25)
@@ -203,26 +204,15 @@ x_shift,y_shift = np.meshgrid(longitude,latitude)
 x = x_shift - 0.75
 y = y_shift - 0.75
 
-# contour data over the map
-#Fa_E_total_m2a_part[Fa_E_total_m2a_part==0] = np.nan
-#Fa_N_total_m2a_part[Fa_N_total_m2a_part==0] = np.nan
+# contour data over the map.
 clevs = np.linspace(0,1.00,11)
 clevs2 = np.linspace(0,1,1100)
-cs = map.contourf(x_shift,y_shift,rho_c_landtotal,clevs2,linewidths=1.5,latlon=True, cmap=cmap)
+cs = map.contourf(x,y,eps_c_landtotal,clevs2,linewidths=1.5,latlon=True, cmap=cmap)
 map.colorbar(cs,location='right',pad="5%", ticks = clevs, label = '(-)')
-
-# standard way of plotting (looks worse)
-#cs = map.contourf(x,y,rho_c_landtotal,linewidths=1.5,latlon=True) 
-#map.colorbar(cs,location='right', label = '(-)')
-
-
-#windplot = map.quiver(x,y,Fa_E_total_m2a_part,Fa_N_total_m2a_part,color = 'black',scale = 199999999,latlon=True,width = 0.002, headaxislength = 5, headwidth = 2)
-#adjust scale till arrows are visible
-
-plt.title('Continental precipitation recycling ratio ' r'$\rho_c$', fontsize = 14)
+plt.title('Continental evaporation recycling ratio ' r'$\epsilon_c$', fontsize = 14)
 plt.show()
 
-#%% ################### GRIDCELL PLOT
+#%% ###################### GRIDCELL PLOT
 
 plt.figure() # nice projections are 'cea', 'cyl', 'eck4' and 'robin', however only 'cea' and 'cyl' allows for not showing the entire world
 map = Basemap(projection='cyl',lat_0=0,lon_0=0,
@@ -233,21 +223,20 @@ map.drawcountries(linewidth=0.25)
 
 x_shift,y_shift = np.meshgrid(longitude,latitude)
 x = x_shift - 0.75
-y = y_shift + 0.75
+y = y_shift - 0.75
 
-lol = map.pcolormesh(x,y,rho_c_landtotal, latlon=True, cmap=cmap,vmin=0,vmax=1)
+lol = map.pcolormesh(x,y,eps_c_landtotal, latlon=True, cmap=cmap,vmin=0,vmax=1)
 map.colorbar(lol,location='right',pad="5%", label = '(-)')
 
 #windplot = map.quiver(x,y,Fa_E_total_m2a_part,Fa_N_total_m2a_part,color = 'black',scale = 199999999,latlon=True,width = 0.002, headaxislength = 5, headwidth = 2)
 #adjust scale till arrows are visible
 
-plt.title('Continental precipitation recycling ratio ' r'$\rho_c$', fontsize = 14)
+plt.title('Continental evaporation recycling ratio ' r'$\epsilon_c$', fontsize = 14)
 plt.show()
-
 
 #%% simplest imshow plot
 plt.figure()
-plt.imshow(rho_c_landtotal)
+plt.imshow(eps_c_landtotal)
 plt.colorbar
 
 #%% Timetracking results
@@ -276,10 +265,13 @@ if timetracking == 1:
     age_track_water_global_mean = (( np.sum(np.sum(Sa_time_down_average[1:-1,:] * Sa_track_down_average[1:-1,:], axis = 0), axis = 0)
         + np.sum(np.sum(Sa_time_top_average[1:-1,:] * Sa_track_top_average[1:-1,:], axis = 0 ), axis = 0) )
         / ( np.sum(np.sum(Sa_track_down_average[1:-1,:], axis = 0), axis = 0) + np.sum(np.sum(Sa_track_top_average[1:-1,:], axis = 0), axis = 0) )) #d 
-
-    P_c_time_total = (np.squeeze(np.sum(np.sum(P_time_per_year_per_month * P_track_per_year_per_month, axis =0), axis = 0)) 
-        / P_c_total / 86400) #d
-
-
-
+    
+    # for a very strange region the wrong size output (96,107,240) is given. Investigate, or check if restarting helps!
+    E_c_average = np.squeeze(np.sum(np.sum(E_track_per_year_per_month[:,:,:,:], axis = 0), axis = 0) ) / len(years) #m3 per year
+    # yielding some nans, up for investigation! also wrong size!!!
+    E_c_time_average = ( (np.squeeze(np.sum(np.sum(E_time_per_year_per_month[:,:,:,:] 
+        * E_track_per_year_per_month[:,:,:,:], axis = 0), axis = 0) ) / len(years) )
+        / E_c_average / 86400 ) #d
+        
+    # E_c_time_average(np.isnan(E_c_time_average)) = 0;
 

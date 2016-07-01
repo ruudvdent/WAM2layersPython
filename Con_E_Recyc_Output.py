@@ -6,7 +6,7 @@ Created on Thu Jun 16 13:24:45 2016
 """
 #delayed runs
 #import time
-#time.sleep(7500)
+#time.sleep(25550)
 
 #%% Import libraries
 
@@ -22,8 +22,8 @@ import datetime
 from getconstants import getconstants
 from timeit import default_timer as timer
 
-#%% BEGIN OF INPUT1 (FILL THIS IN)
-years = np.arange(2002,2009) #fill in the years
+#%%BEGIN OF INPUT1 (FILL THIS IN)
+years = np.arange(2002,2009) # Note that this can be forward as tracking was already finished, whereas the masterscript must be in backward order
 yearpart = np.arange(0,366) # for a full (leap)year fill in np.arange(0,366)
 daily = 1 # 1 for writing out daily data, 0 for only monthly data
 timetracking = 1 # 0 for not tracking time and 1 for tracking time
@@ -46,18 +46,19 @@ latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_grid
 
 #%% Datapaths (FILL THIS IN)
 
-def data_path(y,a):
-    load_Sa_track = 'interdata/continental/' + str(y) + '-' + str(a) + 'Sa_track.mat'
+def data_path(y,a,years,timetracking):
+    load_Sa_track = 'interdata/continental_backward/' + str(y) + '-' + str(a) + 'Sa_track.mat'
     
-    load_Sa_time = 'interdata/continental/' + str(y) + '-' + str(a) + 'Sa_time.mat'
+    load_Sa_time = 'interdata/continental_backward/' + str(y) + '-' + str(a) + 'Sa_time.mat'
     
     load_fluxes_and_storages = 'interdata/' + str(y) + '-' + str(a) + 'fluxes_storages.mat'
+
+    save_path = 'outputdata/E_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat'
     
-    save_path = 'outputdata/P_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat'
-    
-    save_path_daily = 'outputdata/P_track_continental_daily_full' + str(y) + '-timetracking' + str(timetracking) + '.mat'
-    
+    save_path_daily = 'outputdata/E_track_continental_daily_full' + str(y) + '-timetracking' + str(timetracking) + '.mat'
+
     return load_Sa_track,load_Sa_time,load_fluxes_and_storages,save_path,save_path_daily
+
 
 #%% Runtime & Results
 
@@ -65,7 +66,7 @@ start1 = timer()
 startyear = years[0]
 
 E_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
-P_track_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
+E_track_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
 P_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
 Sa_track_down_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
 Sa_track_top_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
@@ -80,15 +81,15 @@ water_lost_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longit
 if timetracking == 1:
     Sa_time_down_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
     Sa_time_top_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
-    P_time_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
-       
+    E_time_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
+
 for i in range(len(years)):
     y = years[i]
     ly = int(calendar.isleap(y))
     final_time = 364+ly
     
     E_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
-    P_track_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
+    E_track_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
     P_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
     Sa_track_down_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
     Sa_track_top_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
@@ -102,12 +103,12 @@ for i in range(len(years)):
     if timetracking == 1:
         Sa_time_down_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
         Sa_time_top_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
-        P_time_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
-        
+        E_time_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
+    
     for j in range(len(yearpart)):
         start = timer()
         a = yearpart[j]
-        datapath = data_path(y,a)
+        datapath = data_path(y,a,years,timetracking)
         if a > final_time: # a = 365 (366th index) and not a leapyear\
             pass
         else:
@@ -140,67 +141,61 @@ for i in range(len(years)):
 
             W = W_top + W_down
             
-            # compute tracked precipitation
-            P_track = P[:,:,:] * (Sa_track[:-1,:,:] / W[:-1,:,:])
+            # compute tracked evaporation
+            E_track = E[:,:,:] * (Sa_track_down[1:,:,:] / W_down[1:,:,:])
             
             # save per day
             E_per_day[a,:,:] = np.sum(E, axis =0)
-            P_track_per_day[a,:,:] = np.sum(P_track, axis =0)
+            E_track_per_day[a,:,:] = np.sum(E_track, axis =0)
             P_per_day[a,:,:] = np.sum(P, axis =0)
-            Sa_track_down_per_day[a,:,:] = np.mean(Sa_track_down[:-1,:,:], axis =0)
-            Sa_track_top_per_day[a,:,:] = np.mean(Sa_track_top[:-1,:,:], axis =0)
-            W_down_per_day[a,:,:] = np.mean(W_down[:-1,:,:], axis =0)
-            W_top_per_day[a,:,:] = np.mean(W_top[:-1,:,:], axis =0)
-
+            Sa_track_down_per_day[a,:,:] = np.mean(Sa_track_down[1:,:,:], axis =0)
+            Sa_track_top_per_day[a,:,:] = np.mean(Sa_track_top[1:,:,:], axis =0)
+            W_down_per_day[a,:,:] = np.mean(W_down[1:,:,:], axis =0)
+            W_top_per_day[a,:,:] = np.mean(W_top[1:,:,:], axis =0)
+            
             north_loss_per_day[a,:,:] = np.sum(north_loss, axis =0)
             south_loss_per_day[a,:,:] = np.sum(south_loss, axis =0)
             down_to_top_per_day[a,:,:] = np.sum(down_to_top, axis =0)
             top_to_down_per_day[a,:,:] = np.sum(top_to_down, axis =0)
             water_lost_per_day[a,:,:] = np.sum(water_lost, axis =0)
-
+            
             if timetracking == 1:
-                # compute tracked precipitation time
-                P_track_down = P[:,:,:] * (Sa_track_down[:-1,:,:] / W[:-1,:,:])
-                P_track_top = P[:,:,:] * (Sa_track_top[:-1,:,:] / W[:-1,:,:])
-                P_time_down = 0.5 * ( Sa_time_down[:-1,:,:] + Sa_time_down[1:,:,:] ) # seconds
-                P_time_top = 0.5 * ( Sa_time_top[:-1,:,:] + Sa_time_top[1:,:,:] ) # seconds
+                # compute tracked evaporation time
+                E_time = 0.5 * ( Sa_time_down[:-1,:,:] + Sa_time_down[1:,:,:] ) # seconds
                 
                 # save per day
-                Sa_time_down_per_day[a,:,:] = (np.mean(Sa_time_down[:-1,:,:] * Sa_track_down[:-1,:,:], axis = 0) 
-                    / Sa_track_down_per_day[a,:,:]) # seconds
-                Sa_time_top_per_day[a,:,:] = (np.mean(Sa_time_top[:-1,:,:] * Sa_track_top[:-1,:,:], axis = 0) 
-                    / Sa_track_top_per_day[a,:,:]) # seconds
-                P_time_per_day[a,:,:] = (np.sum((P_time_down * P_track_down + P_time_top * P_track_top), axis = 0) 
-                    / P_track_per_day[a,:,:]) # seconds
-                    
-                # remove nans
-                where_are_NaNs = np.isnan(P_time_per_day)
-                P_time_per_day[where_are_NaNs] = 0
-                            
+                Sa_time_down_per_day[a,:,:] = np.mean(Sa_time_down[:-1,:,:], axis=0) # seconds
+                Sa_time_top_per_day[a,:,:] = np.mean(Sa_time_top[:-1,:,:], axis=0) # seconds
+                E_time_per_day[a,:,:] = np.sum((E_time * E_track), axis = 0) / E_track_per_day[a,:,:] # seconds
+                
+                # remove nans                
+                where_are_NaNs = np.isnan(E_time_per_day)
+                E_time_per_day[where_are_NaNs] = 0
+        
         end = timer()
         print 'Runtime output for day ' + str(a+1) + ' in year ' + str(y) + ' is',(end - start),' seconds.'
-        
+    
     if daily == 1:
         if timetracking == 0: # create dummy values
             Sa_time_down_per_day = 0
             Sa_time_top_per_day = 0
-            P_time_per_day = 0
-            
+            E_time_per_day = 0
+    
         sio.savemat(datapath[4],
-                    {'E_per_day':E_per_day,'P_track_per_day':P_track_per_day,'P_per_day':P_per_day,
+                    {'E_per_day':E_per_day,'E_track_per_day':E_track_per_day,'P_per_day':P_per_day,
                      'Sa_track_down_per_day':Sa_track_down_per_day,'Sa_track_top_per_day':Sa_track_top_per_day, 
                      'Sa_time_down_per_day':Sa_time_down_per_day,'Sa_time_top_per_day':Sa_time_top_per_day, 
                      'W_down_per_day':W_down_per_day,'W_top_per_day':W_top_per_day,
-                     'P_time_per_day':P_time_per_day},do_compression=True)   
-                        
-    # values per month
+                     'E_time_per_day':E_time_per_day},do_compression=True)    
+
+    # values per month        
     for m in range(12):
         first_day = int(datetime.date(y,m+1,1).strftime("%j"))
         last_day = int(datetime.date(y,m+1,calendar.monthrange(y,m+1)[1]).strftime("%j"))
         days = np.arange(first_day,last_day+1)-1 # -1 because Python is zero-based
         
         E_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.sum(E_per_day[days,:,:], axis = 0)))
-        P_track_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.sum(P_track_per_day[days,:,:], axis = 0)))
+        E_track_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.sum(E_track_per_day[days,:,:], axis = 0)))
         P_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.sum(P_per_day[days,:,:], axis = 0)))
         Sa_track_down_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.mean(Sa_track_down_per_day[days,:,:], axis = 0)))
         Sa_track_top_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.mean(Sa_track_top_per_day[days,:,:], axis = 0)))
@@ -213,34 +208,26 @@ for i in range(len(years)):
         water_lost_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.sum(water_lost_per_day[days,:,:], axis = 0)))
         
         if timetracking == 1:
-            Sa_time_down_per_year_per_month[y-startyear,m,:,:] = ( np.squeeze( np.mean( Sa_time_down_per_day[days,:,:]
-                * Sa_track_down_per_day[days,:,:], axis = 0)) 
-                / np.squeeze(Sa_track_down_per_year_per_month[y-startyear,m,:,:]) )
-            Sa_time_top_per_year_per_month[y-startyear,m,:,:] = ( np.squeeze( np.mean( Sa_time_top_per_day[days,:,:] 
-                * Sa_track_top_per_day[days,:,:],axis = 0)) 
-                / np.squeeze(Sa_track_top_per_year_per_month[y-startyear,m,:,:]) )
-            P_time_per_year_per_month[y-startyear,m,:,:] = ( np.squeeze( np.sum( P_time_per_day[days,:,:] 
-                * P_track_per_day[days,:,:], axis = 0)) 
-                / np.squeeze(P_track_per_year_per_month[y-startyear,m,:,:]) )
-        elif timetracking == 0: # dummy values
+            Sa_time_down_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.mean(Sa_time_down_per_day[days,:,:], axis = 0)))
+            Sa_time_top_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.mean(Sa_time_top_per_day[days,:,:], axis =0)))
+            E_time_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.sum( E_time_per_day[days,:,:] 
+                * E_track_per_day[days,:,:], axis=0)) / np.squeeze(E_track_per_year_per_month[y-startyear,m,:,:]))
+        elif timetracking == 0:
             Sa_time_down_per_year_per_month = 0
             Sa_time_top_per_year_per_month = 0
-            P_time_per_year_per_month = 0
-        
-if timetracking == 1:
-    where_are_NaNs = np.isnan(P_time_per_year_per_month)
-    P_time_per_year_per_month[where_are_NaNs] = 0
+            E_time_per_year_per_month = 0
 
 # save monthly data
 sio.savemat(datapath[3],
-            {'E_per_year_per_month':E_per_year_per_month,'P_track_per_year_per_month':P_track_per_year_per_month,'P_per_year_per_month':P_per_year_per_month,
-             'Sa_track_down_per_year_per_month':Sa_track_down_per_year_per_month,'Sa_track_top_per_year_per_month':Sa_track_top_per_year_per_month, 
-             'Sa_time_down_per_year_per_month':Sa_time_down_per_year_per_month,'Sa_time_top_per_year_per_month':Sa_time_top_per_year_per_month, 
-             'P_time_per_year_per_month':P_time_per_year_per_month,
-             'W_down_per_year_per_month':W_down_per_year_per_month,'W_top_per_year_per_month':W_top_per_year_per_month,
-             'north_loss_per_year_per_month':north_loss_per_year_per_month,'south_loss_per_year_per_month':south_loss_per_year_per_month,
-             'down_to_top_per_year_per_month':down_to_top_per_year_per_month,'top_to_down_per_year_per_month':top_to_down_per_year_per_month,
-             'water_lost_per_year_per_month':water_lost_per_year_per_month},do_compression=True)   
-            
+           {'E_per_year_per_month':E_per_year_per_month,'E_track_per_year_per_month':E_track_per_year_per_month,'P_per_year_per_month':P_per_year_per_month,
+            'Sa_track_down_per_year_per_month':Sa_track_down_per_year_per_month,'Sa_track_top_per_year_per_month':Sa_track_top_per_year_per_month, 
+            'Sa_time_down_per_year_per_month':Sa_time_down_per_year_per_month,'Sa_time_top_per_year_per_month':Sa_time_top_per_year_per_month, 
+            'E_time_per_year_per_month':E_time_per_year_per_month, 'W_down_per_year_per_month':W_down_per_year_per_month,'W_top_per_year_per_month':W_top_per_year_per_month,
+            'north_loss_per_year_per_month':north_loss_per_year_per_month,'south_loss_per_year_per_month':south_loss_per_year_per_month,
+            'down_to_top_per_year_per_month':down_to_top_per_year_per_month,'top_to_down_per_year_per_month':top_to_down_per_year_per_month,
+            'water_lost_per_year_per_month':water_lost_per_year_per_month})
+
 end1 = timer()
-print 'The total runtime of Con_P_Recyc_Output is',(end1-start1),' seconds.'
+print 'The total runtime of Con_E_Recyc_Output is',(end1-start1),' seconds.'
+
+
