@@ -63,6 +63,10 @@ Sa_track_top_per_year_per_month = loading_pypm['Sa_track_top_per_year_per_month'
 Sa_time_down_per_year_per_month = loading_pypm['Sa_time_down_per_year_per_month']
 Sa_time_top_per_year_per_month = loading_pypm['Sa_time_top_per_year_per_month']
 E_time_per_year_per_month = loading_pypm['E_time_per_year_per_month']
+
+#########
+test = E_time_per_year_per_month[0,0,:,:]
+
 W_down_per_year_per_month = loading_pypm['W_down_per_year_per_month']
 W_top_per_year_per_month = loading_pypm['W_top_per_year_per_month']
 north_loss_per_year_per_month = loading_pypm['north_loss_per_year_per_month']
@@ -141,7 +145,7 @@ Test_top_to_down = np.sum(Mean_top_to_down)
 Mean_water_lost = np.squeeze(np.sum(np.sum(water_lost_per_year_per_month, axis = 0), axis = 0))
 Test_water_lost = np.sum(Mean_water_lost)
 Test_north_loss = np.sum(north_loss_per_year_per_month)
-Test_south_loss = np.sum(south_loss_per_year_per_month) # gives a nan, up for investigation!
+Test_south_loss = np.sum(south_loss_per_year_per_month) 
 Isthis100procent = (Test_E_c + Test_water_lost + Test_north_loss + Test_south_loss) / Test_P_land
 print Isthis100procent*100
 
@@ -237,10 +241,11 @@ plt.show()
 #%% simplest imshow plot
 plt.figure()
 plt.imshow(eps_c_landtotal)
-plt.colorbar
+plt.colorbar()
 
 #%% Timetracking results
 
+# for some reasons the sizes of the variables in the "variable explorer" of Spyder get wrongly displayed after running code below, but calling them from the memory works fine
 if timetracking == 1:
     Sa_track_down_average = np.squeeze(np.mean(np.mean(Sa_track_down_per_year_per_month, axis=0), axis = 0)) #m3
     Sa_track_top_average = np.squeeze(np.mean(np.mean(Sa_track_top_per_year_per_month, axis=0), axis = 0)) #m3
@@ -248,7 +253,7 @@ if timetracking == 1:
     Sa_track_down_average_mm = Sa_track_down_average / A_gridcell2D *1000 #mm
     Sa_track_top_average_mm = Sa_track_top_average / A_gridcell2D *1000 #mm
     Sa_track_average_mm = Sa_track_average / A_gridcell2D *1000 #mm
-
+    
     Sa_time_down_average = np.squeeze(np.mean(np.mean(Sa_time_down_per_year_per_month, axis=0), axis = 0)) / 86400  #d quick assesment
     Sa_time_top_average = np.squeeze(np.mean(np.mean(Sa_time_top_per_year_per_month, axis=0), axis = 0)) / 86400  #d quick assesment
     Sa_time_average = (( np.squeeze(np.mean(np.mean(Sa_time_down_per_year_per_month * Sa_track_down_per_year_per_month, axis=0), axis = 0))
@@ -266,12 +271,10 @@ if timetracking == 1:
         + np.sum(np.sum(Sa_time_top_average[1:-1,:] * Sa_track_top_average[1:-1,:], axis = 0 ), axis = 0) )
         / ( np.sum(np.sum(Sa_track_down_average[1:-1,:], axis = 0), axis = 0) + np.sum(np.sum(Sa_track_top_average[1:-1,:], axis = 0), axis = 0) )) #d 
     
-    # for a very strange region the wrong size output (96,107,240) is given. Investigate, or check if restarting helps!
-    E_c_average = np.squeeze(np.sum(np.sum(E_track_per_year_per_month[:,:,:,:], axis = 0), axis = 0) ) / len(years) #m3 per year
-    # yielding some nans, up for investigation! also wrong size!!!
-    E_c_time_average = ( (np.squeeze(np.sum(np.sum(E_time_per_year_per_month[:,:,:,:] 
-        * E_track_per_year_per_month[:,:,:,:], axis = 0), axis = 0) ) / len(years) )
-        / E_c_average / 86400 ) #d
-        
-    # E_c_time_average(np.isnan(E_c_time_average)) = 0;
+    E_c_average = np.squeeze(np.sum(np.sum(E_track_per_year_per_month, axis = 0), axis = 0) ) / len(years) #m3 per year
+    E_c_time_average = ( ( np.squeeze(np.sum(np.sum(E_time_per_year_per_month * E_track_per_year_per_month, axis = 0), axis = 0)) 
+        / len(years) ) / E_c_average / 86400 ) #d
+    
+    # replace possible nans for a smooth plot               
+    E_c_time_average[np.isnan(E_c_time_average)] = Sa_time_average[np.isnan(E_c_time_average)]
 

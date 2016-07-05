@@ -34,7 +34,13 @@ def getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np): # def getco
     gridcell = np.abs(latitude[1] - latitude[0]) # [degrees] grid cell size
     A_gridcell = np.vstack(np.zeros((len(latitude))))
     for i in range(len(latitude)):
-        A_gridcell[i] = (gridcell * dg) * (gridcell * np.cos(latitude[i] * np.pi / 180.0) * dg) # [m2] area size of grid cell
+        if (latitude[i] != 90 and latitude[i] != -90):
+            A_gridcell[i] = (gridcell * dg) * (gridcell * np.cos(latitude[i] * np.pi / 180.0) * dg) # [m2] area size of grid cell
+        elif latitude[i] == 90:
+            A_gridcell[i] = (0.5*gridcell * dg) * (gridcell * np.cos( (latitude[i]-0.25*gridcell) * np.pi / 180.0) * dg)
+        elif latitude[i] == -90:
+            A_gridcell[i] = (0.5*gridcell * dg) * (gridcell * np.cos( (latitude[i]+0.25*gridcell) * np.pi / 180.0) * dg)
+    
     L_N_gridcell = gridcell * np.cos((latitude + gridcell / 2.0) * np.pi / 180.0) * dg # [m] length northern boundary of a cell
     L_S_gridcell = gridcell * np.cos((latitude - gridcell / 2.0) * np.pi / 180.0) * dg # [m] length southern boundary of a cell
     L_EW_gridcell = gridcell * dg # [m] length eastern/western boundary of a cell 

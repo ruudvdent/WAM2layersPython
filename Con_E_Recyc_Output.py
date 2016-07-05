@@ -6,7 +6,7 @@ Created on Thu Jun 16 13:24:45 2016
 """
 #delayed runs
 #import time
-#time.sleep(25550)
+#time.sleep(55004)
 
 #%% Import libraries
 
@@ -212,6 +212,11 @@ for i in range(len(years)):
             Sa_time_top_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.mean(Sa_time_top_per_day[days,:,:], axis =0)))
             E_time_per_year_per_month[y-startyear,m,:,:] = (np.squeeze(np.sum( E_time_per_day[days,:,:] 
                 * E_track_per_day[days,:,:], axis=0)) / np.squeeze(E_track_per_year_per_month[y-startyear,m,:,:]))
+                
+            # remove nans                
+            where_are_NaNs = np.isnan(E_time_per_year_per_month)
+            E_time_per_year_per_month[where_are_NaNs] = 0
+                
         elif timetracking == 0:
             Sa_time_down_per_year_per_month = 0
             Sa_time_top_per_year_per_month = 0

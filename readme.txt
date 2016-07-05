@@ -5,6 +5,10 @@ I might be able to offer some kind of support if it is in my interest as well, b
 
 Released under the GNU General Public License
 
+WAM-2layers v2.4.05 | 5-7-2016
+- solve bug in backward time tracking
+- fix the area size of the gridcells at 90deg latitude in getconstants
+
 WAM-2layers v2.4.04
 - added the backtracking scripts. 
 - The way time-output is analysed may still contain some bugs compared to the Matlab version. Will be updated in future release

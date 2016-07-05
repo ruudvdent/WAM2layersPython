@@ -23,7 +23,7 @@ warnings.filterwarnings("ignore")
 from timeit import default_timer as timer
 
 #%% BEGIN OF INPUT1 (FILL THIS IN)
-years = np.arange(2006,2001,-1) # fill in the years backward
+years = np.arange(2009,2001,-1) # fill in the years backward
 yearpart = np.arange(365,-1,-1) # for a full (leap)year fill in (365,-1,-1)
 boundary = 8 # with 8 the vertical separation is at 812.83 hPa for surface pressure = 1031.25 hPa, which corresponds to k=47 (ERA-Interim)
 divt = 24 # division of the timestep, 24 means a calculation timestep of 6/24 = 0.25 hours (numerical stability purposes)
@@ -284,9 +284,9 @@ def get_Sa_track_backward(latitude,longitude,count_time,divt,Kvf,Region,Fa_E_top
         
         # losses to the north and south
         north_loss[t-1,0,:] = (Fa_N_top_NS[t-1,1,:] * (Sa_track_top[t,1,:] / W_top[t,1,:])
-        + Fa_N_down_NS[t-1,1,:] * (Sa_track_down[t,1,:] / W_down[t,1,:]))
-        south_loss[t-1,0,:] = (Fa_S_top_SN[t-1,-1,:] * (Sa_track_top[t,-1,:] / W_top[t,-1,:])
-        + Fa_S_down_SN[t-1,-1,:] * (Sa_track_down[t,-1,:] / W_down[t,-1,:]))
+                                + Fa_N_down_NS[t-1,1,:] * (Sa_track_down[t,1,:] / W_down[t,1,:]))
+        south_loss[t-1,0,:] = (Fa_S_top_SN[t-1,-2,:] * (Sa_track_top[t,-2,:] / W_top[t,-2,:])
+                                + Fa_S_down_SN[t-1,-2,:] * (Sa_track_down[t,-2,:] / W_down[t,-2,:]))
     
         # down: add precipitation and subtract evaporation
         Sa_track_after_Fa_P_E_down[0,1:-1,:] = (Sa_track_after_Fa_down[0,1:-1,:]
@@ -535,8 +535,8 @@ def get_Sa_track_backward_TIME(latitude,longitude,count_time,divt,timestep,Kvf,R
         # losses to the north and south
         north_loss[t-1,0,:] = (Fa_N_top_NS[t-1,1,:] * (Sa_track_top[t,1,:] / W_top[t,1,:])
                                 + Fa_N_down_NS[t-1,1,:] * (Sa_track_down[t,1,:] / W_down[t,1,:]))
-        south_loss[t-1,0,:] = (Fa_S_top_SN[t-1,-1,:] * (Sa_track_top[t,-1,:] / W_top[t,-1,:])
-                                + Fa_S_down_SN[t-1,-1,:] * (Sa_track_down[t,-1,:] / W_down[t,-1,:]))
+        south_loss[t-1,0,:] = (Fa_S_top_SN[t-1,-2,:] * (Sa_track_top[t,-2,:] / W_top[t,-2,:])
+                                + Fa_S_down_SN[t-1,-2,:] * (Sa_track_down[t,-2,:] / W_down[t,-2,:]))
     
         # down: add precipitation and subtract evaporation
         Sa_track_after_Fa_P_E_down[0,1:-1,:] = (Sa_track_after_Fa_down[0,1:-1,:]
@@ -759,10 +759,11 @@ for i in range(len(years)):
             loading_STT = sio.loadmat(datapath[2],verify_compressed_data_integrity=False)
             Sa_time_top = loading_STT['Sa_time_top'] # [seconds]
             Sa_time_down = loading_STT['Sa_time_down']            
-            Sa_time_top_last_scheef = Sa_time_top[-1,:,:]
-            Sa_time_down_last_scheef = Sa_time_down[-1,:,:]
+            Sa_time_top_last_scheef = Sa_time_top[0,:,:]
+            Sa_time_down_last_scheef = Sa_time_down[0,:,:]
             Sa_time_top_last =  np.reshape(Sa_time_top_last_scheef, (1,len(latitude),len(longitude)))
             Sa_time_down_last =  np.reshape(Sa_time_down_last_scheef, (1,len(latitude),len(longitude)))
+            
             Sa_time_top,Sa_time_down,Sa_track_top,Sa_track_down,north_loss,south_loss,down_to_top,top_to_down,water_lost = get_Sa_track_backward_TIME(latitude,longitude,count_time,divt,
                                             timestep,Kvf,Region,Fa_E_top,Fa_N_top,Fa_E_down,Fa_N_down,Fa_Vert,E,P,W_top,W_down,Sa_track_top_last,Sa_track_down_last,Sa_time_top_last,Sa_time_down_last)
         # save this data 
