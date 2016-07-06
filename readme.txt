@@ -5,6 +5,10 @@ I might be able to offer some kind of support if it is in my interest as well, b
 
 Released under the GNU General Public License
 
+WAM-2layers v2.4.05 | 6-7-2016
+- solve another bug in backward time tracking
+- more accurate area size calculation
+
 WAM-2layers v2.4.05 | 5-7-2016
 - solve bug in backward time tracking
 - fix the area size of the gridcells at 90deg latitude in getconstants

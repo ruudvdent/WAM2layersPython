@@ -29,17 +29,27 @@ def getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np): # def getco
     density_water = 1000 # [kg/m3]
     dg = 111089.56 # [m] length of 1 degree latitude
     timestep = 6*3600 # [s] timestep in the ERA-interim archive (watch out! P & E have 3 hour timestep)
+    Erad = 6.371e6 # [m] Earth radius
     
     # Semiconstants
-    gridcell = np.abs(latitude[1] - latitude[0]) # [degrees] grid cell size
-    A_gridcell = np.vstack(np.zeros((len(latitude))))
-    for i in range(len(latitude)):
-        if (latitude[i] != 90 and latitude[i] != -90):
-            A_gridcell[i] = (gridcell * dg) * (gridcell * np.cos(latitude[i] * np.pi / 180.0) * dg) # [m2] area size of grid cell
-        elif latitude[i] == 90:
-            A_gridcell[i] = (0.5*gridcell * dg) * (gridcell * np.cos( (latitude[i]-0.25*gridcell) * np.pi / 180.0) * dg)
-        elif latitude[i] == -90:
-            A_gridcell[i] = (0.5*gridcell * dg) * (gridcell * np.cos( (latitude[i]+0.25*gridcell) * np.pi / 180.0) * dg)
+    gridcell = np.abs(longitude[1] - longitude[0]) # [degrees] grid cell size
+    
+    # new area size calculation:
+    lat_n_bound = np.minimum(90.0 , latitude + 0.5*gridcell)
+    lat_s_bound = np.maximum(-90.0 , latitude - 0.5*gridcell)
+    
+    A_gridcell = np.zeros([len(latitude),1])
+    A_gridcell[:,0] = (np.pi/180.0)*Erad**2 * abs( np.sin(lat_s_bound*np.pi/180.0) - np.sin(lat_n_bound*np.pi/180.0) ) * gridcell
+
+# old area size calculation    
+#    A_gridcell = np.vstack(np.zeros((len(latitude))))
+#    for i in range(len(latitude)):
+#        if (latitude[i] != 90 and latitude[i] != -90):
+#            A_gridcell[i] = (gridcell * dg) * (gridcell * np.cos(latitude[i] * np.pi / 180.0) * dg) # [m2] area size of grid cell
+#        elif latitude[i] == 90:
+#            A_gridcell[i] = (0.5*gridcell * dg) * (gridcell * np.cos( (latitude[i]-0.25*gridcell) * np.pi / 180.0) * dg)
+#        elif latitude[i] == -90:
+#            A_gridcell[i] = (0.5*gridcell * dg) * (gridcell * np.cos( (latitude[i]+0.25*gridcell) * np.pi / 180.0) * dg)
     
     L_N_gridcell = gridcell * np.cos((latitude + gridcell / 2.0) * np.pi / 180.0) * dg # [m] length northern boundary of a cell
     L_S_gridcell = gridcell * np.cos((latitude - gridcell / 2.0) * np.pi / 180.0) * dg # [m] length southern boundary of a cell

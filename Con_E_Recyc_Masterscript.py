@@ -428,8 +428,8 @@ def get_Sa_track_backward_TIME(latitude,longitude,count_time,divt,timestep,Kvf,R
     # assign begin values of output == last (but first index) values of the previous time slot
     Sa_track_down[-1,:,:] = Sa_track_down_last
     Sa_track_top[-1,:,:] = Sa_track_top_last
-    Sa_time_down[0,:,:] = Sa_time_down_last
-    Sa_time_top[0,:,:] = Sa_time_top_last
+    Sa_time_down[-1,:,:] = Sa_time_down_last
+    Sa_time_top[-1,:,:] = Sa_time_top_last
     
     # defining sizes of tracked moisture
     Sa_track_after_Fa_down = np.zeros(np.shape(Sa_track_down_last))
