@@ -76,46 +76,46 @@ P_c_total = np.squeeze(np.sum(np.sum(P_track_per_year_per_month,axis = 0), axis 
 P_total = np.squeeze(np.sum(np.sum(P_per_year_per_month,axis = 0), axis = 0))
 
 # loading horizontal fluxes
-#loading_HF2S = sio.loadmat(datapath[1])
-#Fa_E_down_per_year_per_month = loading_HF2S['Fa_E_down_per_year_per_month']
-#Fa_E_top_per_year_per_month = loading_HF2S['Fa_E_top_per_year_per_month']
-#Fa_N_down_per_year_per_month = loading_HF2S['Fa_N_down_per_year_per_month']
-#Fa_N_top_per_year_per_month = loading_HF2S['Fa_N_top_per_year_per_month'] 
-#Fa_Vert_per_year_per_month = loading_HF2S['Fa_Vert_per_year_per_month']
-#
-#Fa_E_down_total = np.squeeze(np.sum(np.sum(Fa_E_down_per_year_per_month,axis = 0),axis = 0))
-#Fa_E_top_total = np.squeeze(np.sum(np.sum(Fa_E_top_per_year_per_month,axis = 0),axis = 0))
-#Fa_N_down_total = np.squeeze(np.sum(np.sum(Fa_N_down_per_year_per_month,axis = 0),axis = 0))
-#Fa_N_top_total = np.squeeze(np.sum(np.sum(Fa_N_top_per_year_per_month,axis = 0),axis = 0))
-#Fa_E_total = Fa_E_down_total + Fa_E_top_total
-#Fa_N_total = Fa_N_down_total + Fa_N_top_total
-#
-## annual average fluxes per unit width (m3/m/a)
-#Fa_N_total_m2a = np.zeros(np.shape(Fa_N_total))
-#Fa_N_down_total_m2a = np.zeros(np.shape(Fa_N_down_total))
-#Fa_N_top_total_m2a = np.zeros(np.shape(Fa_N_top_total))
-#
-#for i in range(len(latitude)):
-#    Fa_N_total_m2a[i,:] = (Fa_N_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
-#    Fa_N_down_total_m2a[i,:] = (Fa_N_down_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
-#    Fa_N_top_total_m2a[i,:] = (Fa_N_top_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
-#
-#Fa_E_total_m2a = (Fa_E_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
-#Fa_E_down_total_m2a = (Fa_E_down_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
-#Fa_E_top_total_m2a = (Fa_E_top_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
-#
-## fluxes for plotting
-#FluxDispMatSmall = np.zeros([5,5])
-#FluxDispMatSmall[3,2] = 1
-#FluxDispMat = np.tile(FluxDispMatSmall,[np.floor(len(latitude)/5+1),np.floor(len(longitude)/5)+1])
-#FluxDispMat = FluxDispMat[:len(latitude),:len(longitude)]
-#
-#Fa_E_total_m2a_part = Fa_E_total_m2a * FluxDispMat
-#Fa_N_total_m2a_part = Fa_N_total_m2a * FluxDispMat
-#Fa_E_down_total_m2a_part = Fa_E_down_total_m2a * FluxDispMat
-#Fa_N_down_total_m2a_part = Fa_N_down_total_m2a * FluxDispMat
-#Fa_E_top_total_m2a_part = Fa_E_top_total_m2a * FluxDispMat
-#Fa_N_top_total_m2a_part = Fa_N_top_total_m2a * FluxDispMat
+loading_HF2S = sio.loadmat(datapath[1])
+Fa_E_down_per_year_per_month = loading_HF2S['Fa_E_down_per_year_per_month']
+Fa_E_top_per_year_per_month = loading_HF2S['Fa_E_top_per_year_per_month']
+Fa_N_down_per_year_per_month = loading_HF2S['Fa_N_down_per_year_per_month']
+Fa_N_top_per_year_per_month = loading_HF2S['Fa_N_top_per_year_per_month'] 
+Fa_Vert_per_year_per_month = loading_HF2S['Fa_Vert_per_year_per_month']
+
+Fa_E_down_total = np.squeeze(np.sum(np.sum(Fa_E_down_per_year_per_month,axis = 0),axis = 0))
+Fa_E_top_total = np.squeeze(np.sum(np.sum(Fa_E_top_per_year_per_month,axis = 0),axis = 0))
+Fa_N_down_total = np.squeeze(np.sum(np.sum(Fa_N_down_per_year_per_month,axis = 0),axis = 0))
+Fa_N_top_total = np.squeeze(np.sum(np.sum(Fa_N_top_per_year_per_month,axis = 0),axis = 0))
+Fa_E_total = Fa_E_down_total + Fa_E_top_total
+Fa_N_total = Fa_N_down_total + Fa_N_top_total
+
+# annual average fluxes per unit width (m3/m/a)
+Fa_N_total_m2a = np.zeros(np.shape(Fa_N_total))
+Fa_N_down_total_m2a = np.zeros(np.shape(Fa_N_down_total))
+Fa_N_top_total_m2a = np.zeros(np.shape(Fa_N_top_total))
+
+for i in range(len(latitude)):
+    Fa_N_total_m2a[i,:] = (Fa_N_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
+    Fa_N_down_total_m2a[i,:] = (Fa_N_down_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
+    Fa_N_top_total_m2a[i,:] = (Fa_N_top_total[i,:] / (0.5*(L_N_gridcell[i] + L_S_gridcell[i])))/len(years)
+
+Fa_E_total_m2a = (Fa_E_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
+Fa_E_down_total_m2a = (Fa_E_down_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
+Fa_E_top_total_m2a = (Fa_E_top_total / L_EW_gridcell) / len(years) # Annual average flux per unit width (m3/m/a)
+
+# fluxes for plotting
+FluxDispMatSmall = np.zeros([5,5])
+FluxDispMatSmall[3,2] = 1
+FluxDispMat = np.tile(FluxDispMatSmall,[np.floor(len(latitude)/5+1),np.floor(len(longitude)/5)+1])
+FluxDispMat = FluxDispMat[:len(latitude),:len(longitude)]
+
+Fa_E_total_m2a_part = Fa_E_total_m2a * FluxDispMat
+Fa_N_total_m2a_part = Fa_N_total_m2a * FluxDispMat
+Fa_E_down_total_m2a_part = Fa_E_down_total_m2a * FluxDispMat
+Fa_N_down_total_m2a_part = Fa_N_down_total_m2a * FluxDispMat
+Fa_E_top_total_m2a_part = Fa_E_top_total_m2a * FluxDispMat
+Fa_N_top_total_m2a_part = Fa_N_top_total_m2a * FluxDispMat
 
 # recycling metrics
 rho_c_total = P_c_total / P_total
@@ -200,23 +200,18 @@ map.drawmeridians(np.arange(0,360,30),linewidth=0.1)
 map.drawparallels(np.arange(-90,90,30),linewidth=0.1)
 
 x_shift,y_shift = np.meshgrid(longitude,latitude)
-x = x_shift - 0.75
-y = y_shift - 0.75
+x = x_shift 
+y = y_shift 
 
 # contour data over the map
-#Fa_E_total_m2a_part[Fa_E_total_m2a_part==0] = np.nan
-#Fa_N_total_m2a_part[Fa_N_total_m2a_part==0] = np.nan
+Fa_E_total_m2a_part[Fa_E_total_m2a_part==0] = np.nan
+Fa_N_total_m2a_part[Fa_N_total_m2a_part==0] = np.nan
 clevs = np.linspace(0,1.00,11)
 clevs2 = np.linspace(0,1,1100)
-cs = map.contourf(x_shift,y_shift,rho_c_landtotal,clevs2,linewidths=1.5,latlon=True, cmap=cmap)
+cs = map.contourf(x,y,rho_c_landtotal,clevs2,linewidths=1.5,latlon=True, cmap=cmap)
 map.colorbar(cs,location='right',pad="5%", ticks = clevs, label = '(-)')
 
-# standard way of plotting (looks worse)
-#cs = map.contourf(x,y,rho_c_landtotal,linewidths=1.5,latlon=True) 
-#map.colorbar(cs,location='right', label = '(-)')
-
-
-#windplot = map.quiver(x,y,Fa_E_total_m2a_part,Fa_N_total_m2a_part,color = 'black',scale = 199999999,latlon=True,width = 0.002, headaxislength = 5, headwidth = 2)
+windplot = map.quiver(x,y,Fa_E_total_m2a_part,Fa_N_total_m2a_part,color = 'black',scale = 199999999,latlon=True,width = 0.002, headaxislength = 5, headwidth = 2)
 #adjust scale till arrows are visible
 
 plt.title('Continental precipitation recycling ratio ' r'$\rho_c$', fontsize = 14)
@@ -238,7 +233,7 @@ y = y_shift + 0.75
 lol = map.pcolormesh(x,y,rho_c_landtotal, latlon=True, cmap=cmap,vmin=0,vmax=1)
 map.colorbar(lol,location='right',pad="5%", label = '(-)')
 
-#windplot = map.quiver(x,y,Fa_E_total_m2a_part,Fa_N_total_m2a_part,color = 'black',scale = 199999999,latlon=True,width = 0.002, headaxislength = 5, headwidth = 2)
+windplot = map.quiver(x,y,Fa_E_total_m2a_part,Fa_N_total_m2a_part,color = 'black',scale = 199999999,latlon=True,width = 0.002, headaxislength = 5, headwidth = 2)
 #adjust scale till arrows are visible
 
 plt.title('Continental precipitation recycling ratio ' r'$\rho_c$', fontsize = 14)
@@ -250,7 +245,12 @@ plt.figure()
 plt.imshow(rho_c_landtotal)
 plt.colorbar
 
-#%% Timetracking results
+#%% Timetracking results 
+# these results are very crude and just meant for a quick check. For publications these have been calculated more detailed
+
+#######################################
+# possible check to do the same with daily output or timestep output
+########################################
 
 if timetracking == 1:
     Sa_track_down_average = np.squeeze(np.mean(np.mean(Sa_track_down_per_year_per_month, axis=0), axis = 0)) #m3
@@ -264,8 +264,8 @@ if timetracking == 1:
     Sa_time_top_average = np.squeeze(np.mean(np.mean(Sa_time_top_per_year_per_month, axis=0), axis = 0)) / 86400  #d quick assesment
     Sa_time_average = (( np.squeeze(np.mean(np.mean(Sa_time_down_per_year_per_month * Sa_track_down_per_year_per_month, axis=0), axis = 0))
         + np.squeeze(np.mean(np.mean(Sa_time_top_per_year_per_month * Sa_track_top_per_year_per_month,axis=0), axis = 0))
-        ) / Sa_track_average / 86400)  #d
-
+        ) / Sa_track_average / 86400)  #d       
+   
     Sa_track_down_average = np.squeeze(np.mean(np.mean(Sa_track_down_per_year_per_month, axis=0), axis = 0)) #m3
     Sa_track_top_average = np.squeeze(np.mean(np.mean(Sa_track_top_per_year_per_month, axis=0), axis = 0)) #m3
 
@@ -273,10 +273,25 @@ if timetracking == 1:
         / np.sum(np.sum(Sa_track_down_average[1:-1,:], axis = 0), axis = 0)) #d
     age_top_track_water_global_mean = (np.sum(np.sum(Sa_time_top_average[1:-1,:] * Sa_track_top_average[1:-1,:], axis = 0 ), axis = 0) 
         / np.sum(np.sum(Sa_track_top_average[1:-1,:], axis = 0), axis = 0)) #d
-    age_track_water_global_mean = (( np.sum(np.sum(Sa_time_down_average[1:-1,:] * Sa_track_down_average[1:-1,:], axis = 0), axis = 0)
+        
+    # weighted with the volume of moisture in the atmosphere
+    age_track_water_global_mean_atmos_weight2 = (( np.sum(np.sum(Sa_time_down_average[1:-1,:] * Sa_track_down_average[1:-1,:], axis = 0), axis = 0)
         + np.sum(np.sum(Sa_time_top_average[1:-1,:] * Sa_track_top_average[1:-1,:], axis = 0 ), axis = 0) )
         / ( np.sum(np.sum(Sa_track_down_average[1:-1,:], axis = 0), axis = 0) + np.sum(np.sum(Sa_track_top_average[1:-1,:], axis = 0), axis = 0) )) #d 
-
+        
+    age_track_water_global_mean_atmos_weight = ( ( np.sum(Sa_time_down_per_year_per_month[:,:,1:-1,:] * Sa_track_down_per_year_per_month[:,:,1:-1,:])
+        + np.sum(Sa_time_top_per_year_per_month[:,:,1:-1,:] * Sa_track_top_per_year_per_month[:,:,1:-1,:]) )
+        / ( np.sum(Sa_track_down_per_year_per_month[:,:,1:-1,:]) + np.sum(Sa_track_top_per_year_per_month[:,:,1:-1,:]) ) ) / 86400 #d 
+    
+    # weighted with precipitation 
+    age_track_water_global_mean_precip_weight = ( np.sum( P_time_per_year_per_month[:,:,1:-1,:] * P_track_per_year_per_month[:,:,1:-1,:] ) 
+        / np.sum(P_track_per_year_per_month) / 86400 )# d
+        
+    # weigthed with area
+    age_track_water_global_mean_area_weight = ( np.sum(Sa_time_average[1:-1,:] * A_gridcell2D[1:-1,:])
+        / np.sum(A_gridcell2D) )# d
+    
+    # spatial figure time of tracked precipitation
     P_c_time_total = (np.squeeze(np.sum(np.sum(P_time_per_year_per_month * P_track_per_year_per_month, axis =0), axis = 0)) 
         / P_c_total / 86400) #d
 

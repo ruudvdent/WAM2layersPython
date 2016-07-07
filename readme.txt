@@ -5,6 +5,10 @@ I might be able to offer some kind of support if it is in my interest as well, b
 
 Released under the GNU General Public License
 
+WAM-2layers v2.4.07 | 7-7-2016
+- added the Hor_fluxes output file
+- small changes to the example plotting files
+
 WAM-2layers v2.4.06 | 6-7-2016
 - solve another bug in backward time tracking
 - more accurate area size calculation

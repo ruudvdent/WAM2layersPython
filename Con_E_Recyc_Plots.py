@@ -205,8 +205,8 @@ map.drawmeridians(np.arange(0,360,30),linewidth=0.1)
 map.drawparallels(np.arange(-90,90,30),linewidth=0.1)
 
 x_shift,y_shift = np.meshgrid(longitude,latitude)
-x = x_shift - 0.75
-y = y_shift - 0.75
+x = x_shift 
+y = y_shift 
 
 # contour data over the map.
 clevs = np.linspace(0,1.00,11)
@@ -227,7 +227,7 @@ map.drawcountries(linewidth=0.25)
 
 x_shift,y_shift = np.meshgrid(longitude,latitude)
 x = x_shift - 0.75
-y = y_shift - 0.75
+y = y_shift + 0.75
 
 lol = map.pcolormesh(x,y,eps_c_landtotal, latlon=True, cmap=cmap,vmin=0,vmax=1)
 map.colorbar(lol,location='right',pad="5%", label = '(-)')
@@ -243,7 +243,12 @@ plt.figure()
 plt.imshow(eps_c_landtotal)
 plt.colorbar()
 
-#%% Timetracking results
+#%% Timetracking results 
+# these results are very crude and just meant for a quick check. For publications these have been calculated more detailed
+
+#######################################
+# possible check to do the same with daily output or timestep output
+########################################
 
 # for some reasons the sizes of the variables in the "variable explorer" of Spyder get wrongly displayed after running code below, but calling them from the memory works fine
 if timetracking == 1:
