@@ -6,29 +6,24 @@ Created on Thu Jun 16 13:24:45 2016
 """
 
 #%% Import libraries
-
-import matplotlib.pyplot as plt
 import numpy as np
 from netCDF4 import Dataset
-get_ipython().magic(u'matplotlib inline')
-import numpy.matlib
 import scipy.io as sio
 import calendar
 from getconstants import getconstants
-import warnings
-warnings.filterwarnings("ignore")
 from timeit import default_timer as timer
+import os
 
 #%%BEGIN OF INPUT (FILL THIS IN)
-years = np.arange(2002,2010) #fill in the years
-yearpart = np.arange(0,366) # for a full (leap)year fill in np.arange(0,366)
+years = np.arange(2010,2011) #fill in the years
+yearpart = np.arange(0,364) # for a full (leap)year fill in np.arange(0,366)
 boundary = 8 # with 8 the vertical separation is at 812.83 hPa for surface pressure = 1031.25 hPa, which corresponds to k=47 (ERA-Interim)
 divt = 24 # division of the timestep, 24 means a calculation timestep of 6/24 = 0.25 hours (numerical stability purposes)
 count_time = 4 # number of indices to get data from (for six hourly data this means everytime one day)
 
 # Manage the extent of your dataset (FILL THIS IN)
 # Define the latitude and longitude cell numbers to consider and corresponding lakes that should be considered part of the land
-latnrs = np.arange(7,114)
+latnrs = np.arange(0,121)
 lonnrs = np.arange(0,240)
 isglobal = 1 # fill in 1 for global computations (i.e. Earth round), fill in 0 for a local domain with boundaries
 
@@ -40,46 +35,48 @@ lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arr
 #END OF INPUT
 
 #%% Datapaths (FILL THIS IN)
-invariant_data = 'Interim_data/full/invariants.nc'#invariants
+invariant_data = r'C:\Users\bec\Desktop\WAM2/invariants_15x15.nc' #invariants
+interdata_folder = r'C:\Users\bec\Desktop\WAM2\interdata'
+input_folder = r'C:\Users\bec\Desktop\WAM2'
 
 # other scripts use exactly this sequence, do not change it unless you change it also in the scripts
 def data_path(yearnumber,a):   
-    sp_data = 'Interim_data/full/' + str(yearnumber) + '-sp.nc' #surface pressure
-    sp_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-sp.nc' #surface pressure end of the year
+    sp_data = os.path.join(input_folder, str(yearnumber) + '-sp.nc') #surface pressure
+    sp_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-sp.nc') #surface pressure end of the year
     
-    q_f_data = 'Interim_data/full/' + str(yearnumber) + '-q_mod.nc' #specific humidity 
-    q_f_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-q_mod.nc'#specific humidity end of the year
+    q_f_data = os.path.join(input_folder, str(yearnumber) + '-q_mod.nc') #specific humidity 
+    q_f_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-q_mod.nc')#specific humidity end of the year
 
-    tcw_data = 'Interim_data/full/' + str(yearnumber) + '-tcw.nc' #total column water 
-    tcw_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-tcw.nc' #total column water end of the year
+    tcw_data = os.path.join(input_folder, str(yearnumber) + '-tcw.nc') #total column water 
+    tcw_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-tcw.nc') #total column water end of the year
 
-    u_f_data = 'Interim_data/full/' + str(yearnumber) + '-u_mod.nc' 
-    u_f_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-u_mod.nc' 
+    u_f_data = os.path.join(input_folder, str(yearnumber) + '-u_mod.nc' )
+    u_f_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-u_mod.nc' )
 
-    v_f_data = 'Interim_data/full/' + str(yearnumber) + '-v_mod.nc' 
-    v_f_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-v_mod.nc' 
+    v_f_data = os.path.join(input_folder, str(yearnumber) + '-v_mod.nc' )
+    v_f_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-v_mod.nc' )
 
-    ewvf_data = 'Interim_data/full/' + str(yearnumber) + '-ewvf.nc'
-    ewvf_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-ewvf.nc'
+    ewvf_data = os.path.join(input_folder, str(yearnumber) + '-ewvf.nc')
+    ewvf_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-ewvf.nc')
 
-    nwvf_data = 'Interim_data/full/' + str(yearnumber) + '-nwvf.nc'
-    nwvf_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-nwvf.nc'
+    nwvf_data = os.path.join(input_folder, str(yearnumber) + '-nwvf.nc')
+    nwvf_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-nwvf.nc')
 
-    eclwf_data = 'Interim_data/full/' + str(yearnumber) + '-eclwf.nc'
-    eclwf_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-eclwf.nc'
+    eclwf_data = os.path.join(input_folder, str(yearnumber) + '-eclwf.nc')
+    eclwf_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-eclwf.nc')
 
-    nclwf_data = 'Interim_data/full/' + str(yearnumber) + '-nclwf.nc'
-    nclwf_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-nclwf.nc'
+    nclwf_data = os.path.join(input_folder, str(yearnumber) + '-nclwf.nc')
+    nclwf_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-nclwf.nc')
 
-    ecfwf_data = 'Interim_data/full/' + str(yearnumber) + '-ecfwf.nc'
-    ecfwf_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-ecfwf.nc'
+    ecfwf_data = os.path.join(input_folder, str(yearnumber) + '-ecfwf.nc')
+    ecfwf_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-ecfwf.nc')
 
-    ncfwf_data = 'Interim_data/full/' + str(yearnumber) + '-ncfwf.nc'
-    ncfwf_eoy_data = 'Interim_data/full/' + str(yearnumber+1) + '-ncfwf.nc'
+    ncfwf_data = os.path.join(input_folder, str(yearnumber) + '-ncfwf.nc')
+    ncfwf_eoy_data = os.path.join(input_folder, str(yearnumber+1) + '-ncfwf.nc')
 
-    evaporation_precipitation_data = 'Interim_data/full/' + str(yearnumber) + '-E-P.nc'
+    evaporation_precipitation_data = os.path.join(input_folder, str(yearnumber) + '-E-P.nc')
     
-    save_path = 'interdata/' + str(yearnumber) + '-' + str(a) + 'fluxes_storages.mat'
+    save_path = os.path.join(interdata_folder, str(yearnumber) + '-' + str(a) + 'fluxes_storages.mat')
     
     return sp_data,sp_eoy_data,q_f_data,q_f_eoy_data,tcw_data,tcw_eoy_data,u_f_data,u_f_eoy_data,v_f_data,v_f_eoy_data,ewvf_data,ewvf_eoy_data,nwvf_data,nwvf_eoy_data,eclwf_data,eclwf_eoy_data,nclwf_data,nclwf_eoy_data,ecfwf_data,ecfwf_eoy_data,ncfwf_data,ncfwf_eoy_data,evaporation_precipitation_data,save_path
 
@@ -156,7 +153,7 @@ def getW(latnrs,lonnrs,final_time,a,yearnumber,begin_time,count_time,
     
     # put A_gridcell on a 3D grid
     A_gridcell2D = np.tile(A_gridcell,[1,len(longitude)])
-    A_gridcell_1_2D = np.matlib.reshape(A_gridcell2D, [1,len(latitude),len(longitude)])
+    A_gridcell_1_2D = np.reshape(A_gridcell2D, [1,len(latitude),len(longitude)])
     A_gridcell_plus3D = np.tile(A_gridcell_1_2D,[count_time+1,1,1])
     
     # water volumes
@@ -283,7 +280,7 @@ def getEP(latnrs,lonnrs,yearnumber,begin_time,count_time,latitude,longitude,A_gr
     
     #calculate volumes
     A_gridcell2D = np.tile(A_gridcell,[1,len(longitude)])
-    A_gridcell_1_2D = np.matlib.reshape(A_gridcell2D, [1,len(latitude),len(longitude)])
+    A_gridcell_1_2D = np.reshape(A_gridcell2D, [1,len(latitude),len(longitude)])
     A_gridcell_max3D = np.tile(A_gridcell_1_2D,[count_time*2,1,1])
 
     E = evaporation * A_gridcell_max3D
@@ -558,16 +555,17 @@ def getFa_Vert(Fa_E_top,Fa_E_down,Fa_N_top,Fa_N_down,E,P,W_top,W_down,divt,count
 start1 = timer()
 
 # obtain the constants
-latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np)
+latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,invariant_data)
 
 # loop through the years
-for i in range(len(years)):
-    yearnumber = years[i]
+for yearnumber in years:
+
     ly = int(calendar.isleap(yearnumber))
     final_time = 364 + ly  # number of parts-1 to divide a year in
-    for j in range(len(yearpart)):  # a > 365 (366th index) and not a leapyear
+    
+    for a in yearpart:  # a > 365 (366th index) and not a leapyear
         start = timer()
-        a = yearpart[j] 
+
         datapath = data_path(yearnumber,a) # global variable
         if a > final_time:
             pass

@@ -9,18 +9,12 @@ Created on Thu Jun 16 13:24:45 2016
 #time.sleep(500)
 
 #%% Import libraries
-
-import matplotlib.pyplot as plt
 import numpy as np
-from netCDF4 import Dataset
-get_ipython().magic(u'matplotlib inline')
-import numpy.matlib
 import scipy.io as sio
 import calendar
 from getconstants import getconstants
-import warnings
-warnings.filterwarnings("ignore")
 from timeit import default_timer as timer
+import os
 
 #%% BEGIN OF INPUT1 (FILL THIS IN)
 years = np.arange(2009,2001,-1) # fill in the years backward
@@ -42,7 +36,7 @@ lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arr
 
 # obtain the constants
 invariant_data = 'Interim_data/full/invariants.nc'#invariants
-latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np)
+latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,invariant_data)
 
 # BEGIN OF INPUT 2 (FILL THIS IN)
 Region = lsm
@@ -50,28 +44,40 @@ Kvf = 3 # vertical dispersion factor (advection only is 0, dispersion the same s
 timetracking = 1 # 0 for not tracking time and 1 for tracking time
 veryfirstrun = 0 # type '1' if no run has been done before from which can be continued, otherwise type '0'
 
+interdata_folder = r'C:\Users\bec\Desktop\WAM2\interdata' #must be an existing folder, existence is not checked
+
 #END OF INPUT
 
 #%% Datapaths (FILL THIS IN)
 
+# Check if interdata folder exists:
+assert os.path.isdir(interdata_folder), "Please create the interdata_folder before running the script"
+# Check if sub interdata folder exists otherwise create it:
+sub_interdata_folder = os.path.join(interdata_folder, 'continental_backward')
+if os.path.isdir(sub_interdata_folder):
+    pass
+else:
+    os.makedirs(sub_interdata_folder)
+
+
 def data_path_ea(years,yearpart):
-    save_empty_arrays_ld_track = 'interdata/continental_backward/' + str(years[0]+1) + '-' + str(0) + 'Sa_track.mat'
-    save_empty_arrays_ld_time = 'interdata/continental_backward/' + str(years[0]+1) + '-' + str(0) + 'Sa_time.mat'
+    save_empty_arrays_ld_track = os.path.join(sub_interdata_folder, str(years[0]+1) + '-' + str(0) + 'Sa_track.mat')
+    save_empty_arrays_ld_time = os.path.join(sub_interdata_folder, str(years[0]+1) + '-' + str(0) + 'Sa_time.mat')
     
-    save_empty_arrays_track = 'interdata/continental_backward/' + str(years[0]) + '-' + str(yearpart[0]+1) + 'Sa_track.mat'
-    save_empty_arrays_time = 'interdata/continental_backward/' + str(years[0]) + '-' + str(yearpart[0]+1) + 'Sa_time.mat'
+    save_empty_arrays_track = os.path.join(sub_interdata_folder, str(years[0]) + '-' + str(yearpart[0]+1) + 'Sa_track.mat')
+    save_empty_arrays_time = os.path.join(sub_interdata_folder, str(years[0]) + '-' + str(yearpart[0]+1) + 'Sa_time.mat')
     
     return save_empty_arrays_ld_track,save_empty_arrays_ld_time,save_empty_arrays_track,save_empty_arrays_time
 
 def data_path(previous_data_to_load,yearnumber,a):
-    load_Sa_track ='interdata/continental_backward/' + previous_data_to_load + 'Sa_track.mat'
+    load_Sa_track = os.path.join(sub_interdata_folder, previous_data_to_load + 'Sa_track.mat')
     
-    load_fluxes_and_storages = 'interdata/' + str(yearnumber) + '-' + str(a) + 'fluxes_storages.mat'
+    load_fluxes_and_storages = os.path.join(interdata_folder, str(yearnumber) + '-' + str(a) + 'fluxes_storages.mat')
     
-    load_Sa_time = 'interdata/continental_backward/' + previous_data_to_load + 'Sa_time.mat'
+    load_Sa_time = os.path.join(sub_interdata_folder, previous_data_to_load + 'Sa_time.mat')
 
-    save_path_track = 'interdata/continental_backward/' + str(yearnumber) + '-' + str(a) + 'Sa_track.mat'
-    save_path_time = 'interdata/continental_backward/' + str(yearnumber) + '-' + str(a) + 'Sa_time.mat'
+    save_path_track = os.path.join(sub_interdata_folder, str(yearnumber) + '-' + str(a) + 'Sa_track.mat')
+    save_path_time = os.path.join(sub_interdata_folder, str(yearnumber) + '-' + str(a) + 'Sa_time.mat')
     return load_Sa_track,load_fluxes_and_storages,load_Sa_time,save_path_track,save_path_time
 
 
@@ -81,7 +87,7 @@ def get_Sa_track_backward(latitude,longitude,count_time,divt,Kvf,Region,Fa_E_top
                                        Fa_Vert,E,P,W_top,W_down,Sa_track_top_last,Sa_track_down_last):
     
     # make P_region matrix
-    Region3D = np.tile(np.matlib.reshape(Region,[1,len(latitude),len(longitude)]),[len(P[:,0,0]),1,1])
+    Region3D = np.tile(np.reshape(Region,[1,len(latitude),len(longitude)]),[len(P[:,0,0]),1,1])
     P_region = Region3D * P
     
     # Total moisture in the column
@@ -327,7 +333,7 @@ def get_Sa_track_backward_TIME(latitude,longitude,count_time,divt,timestep,Kvf,R
                                             W_top,W_down,Sa_track_top_last,Sa_track_down_last,Sa_time_top_last,Sa_time_down_last):
 
     # make P_region matrix
-    Region3D = np.tile(np.matlib.reshape(Region,[1,len(latitude),len(longitude)]),[len(P[:,0,0]),1,1])
+    Region3D = np.tile(np.reshape(Region,[1,len(latitude),len(longitude)]),[len(P[:,0,0]),1,1])
     P_region = Region3D * P
     
     # Total moisture in the column
