@@ -4,23 +4,32 @@ Created on Thu Jun 16 13:24:45 2016
 
 @author: Ent00002
 """
+
+#delayed runs
+#import time
+#time.sleep(7500)
+
 #%% Import libraries
 
+import matplotlib.pyplot as plt
 import numpy as np
+from netCDF4 import Dataset
+get_ipython().magic(u'matplotlib inline')
+import numpy.matlib
 import scipy.io as sio
 import calendar
+import time
 import datetime
 from getconstants import getconstants
 from timeit import default_timer as timer
-import os
 
 #%% BEGIN OF INPUT (FILL THIS IN)
-years = np.arange(2010,2011) #fill in the years
-yearpart = np.arange(0,364) # for a full (leap)year fill in 0:366
+years = np.arange(2002,2009) #fill in the years
+yearpart = np.arange(0,366) # for a full (leap)year fill in 0:366
 
 # Manage the extent of your dataset (FILL THIS IN)
 # Define the latitude and longitude cell numbers to consider and corresponding lakes that should be considered part of the land
-latnrs = np.arange(0,121)
+latnrs = np.arange(7,114)
 lonnrs = np.arange(0,240)
 
 # the lake numbers below belong to the ERA-Interim data on 1.5 degree starting at Northern latitude 79.5 and longitude -180
@@ -33,16 +42,14 @@ daily = 1 # 1 for writing out daily data, 0 for only monthly data
 #END OF INPUT
 
 #%% Datapaths (FILL THIS IN)
-invariant_data = r'C:\Users\bec\Desktop\WAM2/invariants_15x15.nc'#invariants
-interdata_folder = r'C:\Users\bec\Desktop\WAM2\interdata'
-output_folder = r'C:\Users\bec\Desktop\WAM2\output'
+invariant_data = 'Interim_data/full/invariants.nc'#invariants
 
 def data_path(y,a,years):
-    load_fluxes_and_storages = os.path.join(interdata_folder, str(y) + '-' + str(a) + 'fluxes_storages.mat')
+    load_fluxes_and_storages = 'interdata/' + str(y) + '-' + str(a) + 'fluxes_storages.mat'
 
-    save_path = os.path.join(output_folder, 'Hor_Fluxes_full' + str(years[0]) + '-' + str(years[-1]) + '.mat')
+    save_path = 'outputdata/Hor_Fluxes_full' + str(years[0]) + '-' + str(years[-1]) + '.mat'
     
-    save_path_daily = os.path.join(output_folder, 'Hor_Fluxes_daily_full' + str(y) + '.mat')
+    save_path_daily = 'outputdata/Hor_Fluxes_daily_full' + str(y) + '.mat'
     
     return load_fluxes_and_storages,save_path,save_path_daily
 
@@ -51,7 +58,7 @@ def data_path(y,a,years):
 start1 = timer()
 
 # obtain the constants
-latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,invariant_data)
+latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np)
 
 startyear = years[0]
 Fa_E_down_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
@@ -60,8 +67,8 @@ Fa_N_down_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitu
 Fa_N_top_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
 Fa_Vert_per_year_per_month = np.zeros((len(years),12,len(latitude),len(longitude)))
 
-for y in years:
-
+for i in range(len(years)):
+    y = years[i]
     ly = int(calendar.isleap(y))
     final_time = 364+ly
     
@@ -71,9 +78,9 @@ for y in years:
     Fa_N_top_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
     Fa_Vert_per_day = np.zeros((365+ly,len(latitude),len(longitude)))
     
-    for a in yearpart:
+    for j in range(len(yearpart)):
         start = timer()
-
+        a = yearpart[j]
         datapath = data_path(y,a,years)
         
         if a > final_time: # a = 365 and not a leapyear

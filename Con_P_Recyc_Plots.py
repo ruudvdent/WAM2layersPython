@@ -8,17 +8,23 @@ Created on Thu Jun 16 13:24:45 2016
 
 import matplotlib.pyplot as plt
 import numpy as np
+from netCDF4 import Dataset
+import numpy.matlib
 import scipy.io as sio
+import calendar
+import time
+import datetime
 from getconstants import getconstants
+import warnings
+warnings.filterwarnings("ignore")
 from matplotlib.colors import LinearSegmentedColormap
-import os
 
 #%% BEGIN OF INPUT (FILL THIS IN)
-years = np.arange(2010,2011) #fill in the years
+years = np.arange(2002,2009) #fill in the years
 
 # Manage the extent of your dataset (FILL THIS IN)
 # Define the latitude and longitude cell numbers to consider and corresponding lakes that should be considered part of the land
-latnrs = np.arange(0,121)
+latnrs = np.arange(7,114)
 lonnrs = np.arange(0,240)
 
 # the lake numbers below belong to the ERA-Interim data on 1.5 degree starting at Northern latitude 79.5 and longitude -180
@@ -27,22 +33,21 @@ lake_mask_2 = np.array([120+19,120+40,120+41,120+43,120+44,120+61,120+62,120+62,
 lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arrays of the matlab model
 
 # obtain the constants
-invariant_data = r'C:\Users\bec\Desktop\WAM2/invariants_15x15.nc'#invariants
-latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,invariant_data)
+invariant_data = 'Interim_data/full/invariants.nc'#invariants
+latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np)
 A_gridcell2D = np.tile(A_gridcell,len(longitude));
 
 # BEGIN OF INPUT 2 (FILL THIS IN)
 timetracking = 1 # 0 for not tracking time and 1 for tracking time
 Region = lsm
 
-output_folder = r'C:\Users\bec\Desktop\WAM2\output'
 # END OF INPUT
 
 #%% Datapaths (FILL THIS IN)
 
 def data_path(years,timetracking):
-    load_data_pypm = os.path.join(output_folder, 'P_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat')
-    load_data_hf = os.path.join(output_folder, 'Hor_Fluxes_full' + str(years[0]) + '-' + str(years[-1]) + '.mat')
+    load_data_pypm = 'outputdata/P_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat'
+    load_data_hf = 'outputdata/Hor_Fluxes_full' + str(years[0]) + '-' + str(years[-1]) + '.mat'
     return load_data_pypm,load_data_hf
 
 #%% Calculations
@@ -148,7 +153,7 @@ print(water_lost_vertically*100, water_lost_north*100, water_lost_south*100)
 
 
 #%% Plotting constants
-#get_ipython().magic(u'matplotlib qt')
+get_ipython().magic(u'matplotlib qt')
 from mpl_toolkits.basemap import Basemap
 
 cdict = {'red': ((0., 1, 1),
