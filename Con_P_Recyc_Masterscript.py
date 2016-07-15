@@ -33,7 +33,7 @@ lake_mask_2 = np.array([120+19,120+40,120+41,120+43,120+44,120+61,120+62,120+62,
 lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arrays of the matlab model
 
 # obtain the constants
-invariant_data = r'C:\Users\bec\Desktop\WAM2/invariants_15x15.nc' #invariants
+invariant_data = 'Interim_data/full/invariants.nc' #invariants
 latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,invariant_data)
 
 # BEGIN OF INPUT 2 (FILL THIS IN)
