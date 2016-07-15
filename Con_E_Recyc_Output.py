@@ -13,7 +13,6 @@ Created on Thu Jun 16 13:24:45 2016
 
 import numpy as np
 import scipy.io as sio
-from netCDF4 import Dataset
 import calendar
 import datetime
 from getconstants import getconstants
