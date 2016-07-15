@@ -4,7 +4,10 @@ Created on Thu Jun 16 13:24:45 2016
 
 @author: Ent00002
 """
-
+#delayed runs, comment if unused
+#import time
+#time.sleep(7500)
+ 
 #%% Import libraries
 
 import numpy as np
