@@ -17,6 +17,7 @@ http://dx.doi.org/10.4233/uuid:0ab824ee-6956-4cc3-b530-3245ab4f32be."
 
 WAM-2layers v2.4.08 | 15-7-2016
 - Better datapath structure (thanks to Bert Coerver)
+- changed back the latnrs to 7,114, otherwise lakemask does not correspond
 - added warnings in readme
 
 WAM-2layers v2.4.07 | 7-7-2016
