@@ -35,7 +35,7 @@ lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arr
 #END OF INPUT
 
 #%% Datapaths (FILL THIS IN)
-invariant_data = r'C:\Users\bec\Desktop\WAM2/invariants_15x15.nc' #invariants
+invariant_data = 'Interim_data/full/invariants.nc' #invariants
 interdata_folder = r'C:\Users\bec\Desktop\WAM2\interdata'
 input_folder = r'C:\Users\bec\Desktop\WAM2'
 
