@@ -4,23 +4,20 @@ Created on Thu Jun 16 13:24:45 2016
 
 @author: Ent00002
 """
-#delayed runs
-import time
-time.sleep(44000)
+
+# delayed runs, comment the 2 lines below when unused
+# import time
+# time.sleep(100)
 
 #%% Import libraries
 
-import matplotlib.pyplot as plt
 import numpy as np
-from netCDF4 import Dataset
-get_ipython().magic(u'matplotlib inline')
-import numpy.matlib
 import scipy.io as sio
 import calendar
-import time
 import datetime
 from getconstants import getconstants
 from timeit import default_timer as timer
+import os
 
 #%%BEGIN OF INPUT1 (FILL THIS IN)
 years = np.arange(2002,2009) # Note that this can be forward as tracking was already finished, whereas the masterscript must be in backward order
@@ -40,22 +37,27 @@ lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arr
 
 # obtain the constants
 invariant_data = 'Interim_data/full/invariants.nc'#invariants
-latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np)
+latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,invariant_data)
+
+interdata_folder = r'C:\Users\bec\Desktop\WAM2\interdata'
+output_folder = r'C:\Users\bec\Desktop\WAM2\output'
+sub_interdata_folder = os.path.join(interdata_folder, 'continental_backward')
 
 #END OF INPUT
 
 #%% Datapaths (FILL THIS IN)
 
-def data_path(y,a,years,timetracking):
-    load_Sa_track = 'interdata/continental_backward/' + str(y) + '-' + str(a) + 'Sa_track.mat'
-    
-    load_Sa_time = 'interdata/continental_backward/' + str(y) + '-' + str(a) + 'Sa_time.mat'
-    
-    load_fluxes_and_storages = 'interdata/' + str(y) + '-' + str(a) + 'fluxes_storages.mat'
 
-    save_path = 'outputdata/E_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat'
+def data_path(y,a,years,timetracking):
+    load_Sa_track = os.path.join(sub_interdata_folder, str(y) + '-' + str(a) + 'Sa_track.mat')
     
-    save_path_daily = 'outputdata/E_track_continental_daily_full' + str(y) + '-timetracking' + str(timetracking) + '.mat'
+    load_Sa_time = os.path.join(sub_interdata_folder, str(y) + '-' + str(a) + 'Sa_time.mat')
+    
+    load_fluxes_and_storages = os.path.join(interdata_folder, str(y) + '-' + str(a) + 'fluxes_storages.mat')
+
+    save_path = os.path.join(output_folder, 'E_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat')
+    
+    save_path_daily = os.path.join(output_folder, 'E_track_continental_daily_full' + str(y) + '-timetracking' + str(timetracking) + '.mat')
 
     return load_Sa_track,load_Sa_time,load_fluxes_and_storages,save_path,save_path_daily
 

@@ -8,16 +8,10 @@ Created on Thu Jun 16 13:24:45 2016
 
 import matplotlib.pyplot as plt
 import numpy as np
-from netCDF4 import Dataset
-import numpy.matlib
 import scipy.io as sio
-import calendar
-import time
-import datetime
 from getconstants import getconstants
-import warnings
-warnings.filterwarnings("ignore")
 from matplotlib.colors import LinearSegmentedColormap
+import os
 
 #%% BEGIN OF INPUT (FILL THIS IN)
 years = np.arange(2002,2009) #fill in the years
@@ -34,20 +28,22 @@ lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arr
 
 # obtain the constants
 invariant_data = 'Interim_data/full/invariants.nc'#invariants
-latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np)
+latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,invariant_data)
 A_gridcell2D = np.tile(A_gridcell,len(longitude));
 
 # BEGIN OF INPUT 2 (FILL THIS IN)
 timetracking = 1 # 0 for not tracking time and 1 for tracking time
 Region = lsm
 
+output_folder = r'C:\Users\bec\Desktop\WAM2\output'
+
 # END OF INPUT
 
 #%% Datapaths (FILL THIS IN)
 
 def data_path(years,timetracking):
-    load_data_pypm = 'outputdata/E_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat'
-    load_data_hf = 'outputdata/Hor_Fluxes_full' + str(years[0]) + '-' + str(years[-1]) + '.mat'
+    load_data_pypm = os.path.join(output_folder, 'E_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat')
+    load_data_hf = os.path.join(output_folder, 'Hor_Fluxes_full' + str(years[0]) + '-' + str(years[-1]) + '.mat')
     return load_data_pypm, load_data_hf
 
 #%%  Calculations 

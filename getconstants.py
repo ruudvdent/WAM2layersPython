@@ -4,12 +4,10 @@ Created on Tue Jun 21 12:38:45 2016
 
 @author: Ent00002
 """
+import numpy as np
+from netCDF4 import Dataset
 
-# the function below must be called with the following libraries imported:
-# import numpy as np
-# from netCDF4 import Dataset, and the global variable: invariant_data
-
-def getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np): # def getconstants in Python is the same as function in MATLAB. 
+def getconstants(latnrs,lonnrs,lake_mask,invariant_data): # def getconstants in Python is the same as function in MATLAB. 
     
     # load the latitude and longitude from the invariants file
     latitude = Dataset(invariant_data, mode = 'r').variables['latitude'][latnrs] # [degrees north]

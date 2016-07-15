@@ -4,33 +4,29 @@ Created on Thu Jun 16 13:24:45 2016
 
 @author: Ent00002
 """
-#delayed runs
+#delayed runs, comment if unused
 #import time
 #time.sleep(7500)
-
+ 
 #%% Import libraries
 
-import matplotlib.pyplot as plt
 import numpy as np
-from netCDF4 import Dataset
-get_ipython().magic(u'matplotlib inline')
-import numpy.matlib
+import os
 import scipy.io as sio
 import calendar
-import time
 import datetime
 from getconstants import getconstants
 from timeit import default_timer as timer
 
 #%% BEGIN OF INPUT1 (FILL THIS IN)
-years = np.arange(2002,2009) #fill in the years
-yearpart = np.arange(0,366) # for a full (leap)year fill in np.arange(0,366)
+years = np.arange(2010,2011) #fill in the years
+yearpart = np.arange(0,364) # for a full (leap)year fill in np.arange(0,366)
 daily = 1 # 1 for writing out daily data, 0 for only monthly data
 timetracking = 1 # 0 for not tracking time and 1 for tracking time
 
 # Manage the extent of your dataset (FILL THIS IN)
 # Define the latitude and longitude cell numbers to consider and corresponding lakes that should be considered part of the land
-latnrs = np.arange(7,114)
+latnrs = np.arange(0,121)
 lonnrs = np.arange(0,240)
 
 # the lake numbers below belong to the ERA-Interim data on 1.5 degree starting at Northern latitude 79.5 and longitude -180
@@ -39,23 +35,26 @@ lake_mask_2 = np.array([120+19,120+40,120+41,120+43,120+44,120+61,120+62,120+62,
 lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arrays of the matlab model
 
 # obtain the constants
-invariant_data = 'Interim_data/full/invariants.nc'#invariants
-latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np)
-
+invariant_data = r'C:\Users\bec\Desktop\WAM2/invariants_15x15.nc' #invariants
+latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,invariant_data)
+interdata_folder = r'C:\Users\bec\Desktop\WAM2\interdata'
+output_folder = r'C:\Users\bec\Desktop\WAM2\output'
 #END OF INPUT
 
 #%% Datapaths (FILL THIS IN)
 
+sub_interdata_folder = os.path.join(interdata_folder, 'continental_forward')
+
 def data_path(y,a):
-    load_Sa_track = 'interdata/continental/' + str(y) + '-' + str(a) + 'Sa_track.mat'
+    load_Sa_track = os.path.join(sub_interdata_folder, str(y) + '-' + str(a) + 'Sa_track.mat')
     
-    load_Sa_time = 'interdata/continental/' + str(y) + '-' + str(a) + 'Sa_time.mat'
+    load_Sa_time = os.path.join(sub_interdata_folder, str(y) + '-' + str(a) + 'Sa_time.mat')
     
-    load_fluxes_and_storages = 'interdata/' + str(y) + '-' + str(a) + 'fluxes_storages.mat'
+    load_fluxes_and_storages = os.path.join(interdata_folder, str(y) + '-' + str(a) + 'fluxes_storages.mat')
     
-    save_path = 'outputdata/P_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat'
+    save_path = os.path.join(output_folder, 'P_track_continental_full' + str(years[0]) + '-' + str(years[-1]) + '-timetracking' + str(timetracking) + '.mat')
     
-    save_path_daily = 'outputdata/P_track_continental_daily_full' + str(y) + '-timetracking' + str(timetracking) + '.mat'
+    save_path_daily = os.path.join(output_folder, 'P_track_continental_daily_full' + str(y) + '-timetracking' + str(timetracking) + '.mat')
     
     return load_Sa_track,load_Sa_time,load_fluxes_and_storages,save_path,save_path_daily
 

@@ -4,34 +4,26 @@ Created on Thu Jun 16 13:24:45 2016
 
 @author: Ent00002
 """
-#delayed runs
-#import time
-#time.sleep(500)
 
 #%% Import libraries
 
-import matplotlib.pyplot as plt
 import numpy as np
-from netCDF4 import Dataset
-get_ipython().magic(u'matplotlib inline')
-import numpy.matlib
 import scipy.io as sio
 import calendar
 from getconstants import getconstants
-import warnings
-warnings.filterwarnings("ignore")
 from timeit import default_timer as timer
+import os
 
 #%% BEGIN OF INPUT1 (FILL THIS IN)
-years = np.arange(2001,2009) #fill in the years
-yearpart = np.arange(0,366) # for a full (leap)year fill in np.arange(0,366)
+years = np.arange(2010,2011) #fill in the years
+yearpart = np.arange(0,364) # for a full (leap)year fill in np.arange(0,366)
 boundary = 8 # with 8 the vertical separation is at 812.83 hPa for surface pressure = 1031.25 hPa, which corresponds to k=47 (ERA-Interim)
 divt = 24 # division of the timestep, 24 means a calculation timestep of 6/24 = 0.25 hours (numerical stability purposes)
 count_time = 4 # number of indices to get data from (for six hourly data this means everytime one day)
 
 # Manage the extent of your dataset (FILL THIS IN)
 # Define the latitude and longitude cell numbers to consider and corresponding lakes that should be considered part of the land
-latnrs = np.arange(7,114)
+latnrs = np.arange(0,121)
 lonnrs = np.arange(0,240)
 isglobal = 1 # fill in 1 for global computations (i.e. Earth round), fill in 0 for a local domain with boundaries
 
@@ -41,8 +33,8 @@ lake_mask_2 = np.array([120+19,120+40,120+41,120+43,120+44,120+61,120+62,120+62,
 lake_mask = np.transpose(np.vstack((lake_mask_1,lake_mask_2))) #recreate the arrays of the matlab model
 
 # obtain the constants
-invariant_data = 'Interim_data/full/invariants.nc'#invariants
-latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,Dataset,invariant_data,np)
+invariant_data = 'Interim_data/full/invariants.nc' #invariants
+latitude,longitude,lsm,g,density_water,timestep,A_gridcell,L_N_gridcell,L_S_gridcell,L_EW_gridcell,gridcell = getconstants(latnrs,lonnrs,lake_mask,invariant_data)
 
 # BEGIN OF INPUT 2 (FILL THIS IN)
 Region = lsm
@@ -50,28 +42,38 @@ Kvf = 3 # vertical dispersion factor (advection only is 0, dispersion the same s
 timetracking = 1 # 0 for not tracking time and 1 for tracking time
 veryfirstrun = 1 # type '1' if no run has been done before from which can be continued, otherwise type '0'
 
+interdata_folder = r'C:\Users\bec\Desktop\WAM2\interdata' #must be an existing folder, existence is not checked
+
 #END OF INPUT
 
 #%% Datapaths (FILL THIS IN)
 
+# Check if interdata folder exists:
+assert os.path.isdir(interdata_folder), "Please create the interdata_folder before running the script"
+# Check if sub interdata folder exists otherwise create it:
+sub_interdata_folder = os.path.join(interdata_folder, 'continental_forward')
+if os.path.isdir(sub_interdata_folder):
+    pass
+else:
+    os.makedirs(sub_interdata_folder)
+
 def data_path_ea(years,yearpart):
-    save_empty_arrays_ly_track = 'interdata/continental/' + str(years[0]-1) + '-' + str(364+calendar.isleap(years[0]-1)) + 'Sa_track.mat'
-    save_empty_arrays_ly_time = 'interdata/continental/' + str(years[0]-1) + '-' + str(364+calendar.isleap(years[0]-1)) + 'Sa_time.mat'
+    save_empty_arrays_ly_track = os.path.join(sub_interdata_folder, str(years[0]-1) + '-' + str(364+calendar.isleap(years[0]-1)) + 'Sa_track.mat')
+    save_empty_arrays_ly_time = os.path.join(sub_interdata_folder, str(years[0]-1) + '-' + str(364+calendar.isleap(years[0]-1)) + 'Sa_time.mat')
     
-    save_empty_arrays_track = 'interdata/continental/' + str(years[0]) + '-' + str(yearpart[0]-1) + 'Sa_track.mat'
-    save_empty_arrays_time = 'interdata/continental/' + str(years[0]) + '-' + str(yearpart[0]-1) + 'Sa_time.mat'
+    save_empty_arrays_track = os.path.join(sub_interdata_folder, str(years[0]) + '-' + str(yearpart[0]-1) + 'Sa_track.mat')
+    save_empty_arrays_time = os.path.join(sub_interdata_folder, str(years[0]) + '-' + str(yearpart[0]-1) + 'Sa_time.mat')
     
     return save_empty_arrays_ly_track,save_empty_arrays_ly_time,save_empty_arrays_track,save_empty_arrays_time
 
 def data_path(previous_data_to_load,yearnumber,a):
-    load_Sa_track = 'interdata/continental/' + previous_data_to_load + 'Sa_track.mat'
+    load_Sa_track = os.path.join(sub_interdata_folder, previous_data_to_load + 'Sa_track.mat')
+    load_Sa_time = os.path.join(sub_interdata_folder, previous_data_to_load + 'Sa_time.mat')
     
-    load_fluxes_and_storages = 'interdata/' + str(yearnumber) + '-' + str(a) + 'fluxes_storages.mat'
+    load_fluxes_and_storages = os.path.join(interdata_folder, str(yearnumber) + '-' + str(a) + 'fluxes_storages.mat')
     
-    load_Sa_time = 'interdata/continental/' + previous_data_to_load + 'Sa_time.mat'
-
-    save_path_track = 'interdata/continental/' + str(yearnumber) + '-' + str(a) + 'Sa_track.mat'
-    save_path_time = 'interdata/continental/' + str(yearnumber) + '-' + str(a) + 'Sa_time.mat'
+    save_path_track = os.path.join(sub_interdata_folder, str(yearnumber) + '-' + str(a) + 'Sa_track.mat')
+    save_path_time = os.path.join(sub_interdata_folder, str(yearnumber) + '-' + str(a) + 'Sa_time.mat')
     return load_Sa_track,load_fluxes_and_storages,load_Sa_time,save_path_track,save_path_time
 
 
@@ -327,7 +329,7 @@ def get_Sa_track_forward_TIME(latitude,longitude,count_time,divt,timestep,Kvf,Re
                                        W_top,W_down,Sa_track_top_last,Sa_track_down_last,Sa_time_top_last,Sa_time_down_last):
     
     # make E_region matrix
-    Region3D = np.tile(np.matlib.reshape(Region,[1,len(latitude),len(longitude)]),[len(P[:,0,0]),1,1])
+    Region3D = np.tile(np.reshape(Region,[1,len(latitude),len(longitude)]),[len(P[:,0,0]),1,1])
     E_region = Region3D * E
 
     # Total moisture in the column
@@ -708,18 +710,16 @@ if veryfirstrun == 1:
     create_empty_array(count_time,divt,latitude,longitude,yearpart,years) #creates empty arrays for first day run
 
 # loop through the years
-for i in range(len(years)):
-    yearnumber = years[i]
-    ly = int(calendar.isleap(yearnumber))
+for yearnumber in years:
     
     if (yearpart[-1] == 365) & (calendar.isleap(yearnumber) == 0):
         thisyearpart = yearpart[:-1]
     else: # a leapyear
         thisyearpart = yearpart
         
-    for j in range(len(thisyearpart)):
+    for a in thisyearpart:
         start = timer()
-        a = thisyearpart[j]
+
         if a == 0: # a == 1 January
             previous_data_to_load = (str(yearnumber-1) + '-' + str(364+calendar.isleap(yearnumber-1)))
         else: # a != 1 January
