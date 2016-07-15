@@ -4,14 +4,20 @@ Main developer of the code Ruud van der Ent (r.j.vanderent@uu.nl). Please let me
 I might be able to offer some kind of support if it is in my interest as well, but I cannot guarantee to do any kind of troubleshooting for free
 as I have to work on my own projects as well.
 
-The file "Readme WAM2 - not fully up-to-date.pdf" was written by Tolga Cömert and Niek van de Koppel and provides a general guideline, 
+The file "Readme WAM2 - not fully up-to-date.pdf" was written by Tolga CÃ¶mert and Niek van de Koppel and provides a general guideline, 
 but as the name says is not fully up-to-date with the latest changes from v2.4.01 onward. One thing to clarify is that I consider the definitions:
 "get_Sa_track_forward'_TIME'", "get_Sa_track_backward'_TIME'" within the "Masterscripts" to be the CORE module of "WAM-2layers". Everything else is 
-either pre-processing or post-processing and merely provided here as an example for the user of the CORE module of "WAM-2layers".
+either pre-processing or post-processing and merely provided here as an example for the user of the CORE module of "WAM-2layers". Another point I need to make is a warning for using the model near the poles (above 80deg N or below 80deg S) on a regular lat-lon grid
+as this could lead to a violation of the Courant-criterion and lead to unphysical results. 
+In general one must be aware that using the model on smaller grids may need smaller timesteps than those that are currently in the code. 
 
 Released under the GNU General Public License. Please cite this Github and 
 "Van der Ent, R. J. (2014), A new view on the hydrological cycle over continents, Ph.D. thesis, 96 pp, Delft University of Technology, Delft. 
 http://dx.doi.org/10.4233/uuid:0ab824ee-6956-4cc3-b530-3245ab4f32be."
+
+WAM-2layers v2.4.08 | 15-7-2016
+- Better datapath structure (thanks to Bert Coerver)
+- added warnings in readme
 
 WAM-2layers v2.4.07 | 7-7-2016
 - added the Hor_fluxes_output file
@@ -36,12 +42,12 @@ WAM-2layers v2.4.02 | 28-6-2016
 - fixed a small bug to "lake_mask" so that lakes are identified correctly
 
 WAM-2layers v2.4.01 | 24-6-2016
-- Python version of the model with credits to Tolga Cömert and Niek van de Koppel
+- Python version of the model with credits to Tolga CÃ¶mert and Niek van de Koppel
 - forward tracking only, backward tracking will follow soon
 - structure of the code is clearer, datapaths and input need to be provided at the top of the scripts and output will follow automatically
 
 WAM-2layers v2.4.00 - non-released version
-- Python/Jupyter version of the model by Tolga Cömert and Niek van de Koppel
+- Python/Jupyter version of the model by Tolga CÃ¶mert and Niek van de Koppel
 
 WAM-2layers v2.3.03 - non-released version
 - changed leapyear function to isleap
