@@ -5,6 +5,10 @@ Created on Thu Jun 16 13:24:45 2016
 @author: Ent00002
 """
 
+# delayed runs, comment the 2 lines below when unused
+# import time
+# time.sleep(100)
+
 #%% Import libraries
 
 import numpy as np
