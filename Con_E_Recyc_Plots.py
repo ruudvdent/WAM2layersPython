@@ -9,7 +9,6 @@ Created on Thu Jun 16 13:24:45 2016
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.io as sio
-from NetCDF4 import Dataset
 from getconstants import getconstants
 from matplotlib.colors import LinearSegmentedColormap
 import os
