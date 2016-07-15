@@ -20,7 +20,7 @@ yearpart = np.arange(0,364) # for a full (leap)year fill in 0:366
 
 # Manage the extent of your dataset (FILL THIS IN)
 # Define the latitude and longitude cell numbers to consider and corresponding lakes that should be considered part of the land
-latnrs = np.arange(0,121)
+latnrs = np.arange(7,114)
 lonnrs = np.arange(0,240)
 
 # the lake numbers below belong to the ERA-Interim data on 1.5 degree starting at Northern latitude 79.5 and longitude -180
