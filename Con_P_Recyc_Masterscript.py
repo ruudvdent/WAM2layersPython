@@ -23,7 +23,7 @@ count_time = 4 # number of indices to get data from (for six hourly data this me
 
 # Manage the extent of your dataset (FILL THIS IN)
 # Define the latitude and longitude cell numbers to consider and corresponding lakes that should be considered part of the land
-latnrs = np.arange(0,121)
+latnrs = np.arange(7,114)
 lonnrs = np.arange(0,240)
 isglobal = 1 # fill in 1 for global computations (i.e. Earth round), fill in 0 for a local domain with boundaries
 
