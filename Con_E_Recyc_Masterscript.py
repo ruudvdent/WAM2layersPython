@@ -11,7 +11,6 @@ Created on Thu Jun 16 13:24:45 2016
 #%% Import libraries
 import numpy as np
 import scipy.io as sio
-from NetCDF4 import Dataset
 import calendar
 from getconstants import getconstants
 from timeit import default_timer as timer
