@@ -1,4 +1,4 @@
-RELEASE NOTES
+﻿RELEASE NOTES
 
 Main developer of the code Ruud van der Ent (r.j.vanderent@uu.nl). Please let me know when you intend to use this code for research, 
 I might be able to offer some kind of support if it is in my interest as well, but I cannot guarantee to do any kind of troubleshooting for free
@@ -14,6 +14,9 @@ In general one must be aware that using the model on smaller grids may need smal
 Released under the GNU General Public License. Please cite this Github and 
 "Van der Ent, R. J. (2014), A new view on the hydrological cycle over continents, Ph.D. thesis, 96 pp, Delft University of Technology, Delft. 
 http://dx.doi.org/10.4233/uuid:0ab824ee-6956-4cc3-b530-3245ab4f32be."
+
+2-12-2016
+- user list added (please feel free to contribute!)
 
 WAM-2layers v2.4.08 | 15-7-2016
 - Better datapath structure (thanks to Bert Coerver)

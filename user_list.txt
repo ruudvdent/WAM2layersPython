@@ -1,0 +1,19 @@
+﻿USER LIST
+
+Below is a list of all current and past known users of the Water Accounting Model - 2 layers (WAM-2layers) or previous versions.
+Please feel free to add/change your name and create a pull request.
+
+
+Name			- affiliation								- current version in use
+
+1.  Ruud van der Ent	- Utrecht University (previously at Delft University of Technology) 	- WAM-2layers v2.4.08
+2.  Patrick Keys	- Colorado state University & Stockholm University			- WAM-2layers v2.3.02 (matlab)
+3.  Lan-Wang Erlandsson	- Stockholm University & Delft University of Technology			- WAM-2layers v2.3.02 (matlab)
+4.  Bert Coerver	- Unesco IHE								- WAM-2layers v2.4.08
+5.  Liang Guo		- University of Reading							- WAM-2layers v2.4.08
+6.  Sem Vijverberg	- Utrecht University & KNMI						- WAM-2layers v2.4.08
+7.  Kirsten Findell	- Princeton University							- WAM-2layers v2.4.08
+8.  Delphine Clara Zemp	- University of Göttingen (previously at PIK)				- WAM-2layers v2.3.02 (matlab)
+9.  Deliang Chen	- University of Gothenburg						- own code based on WAM papers
+10. Tongtiegang Zhao	- CSIRO (previously at Tsinghua University)				- own code based on WAM papers
+
