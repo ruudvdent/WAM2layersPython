@@ -71,9 +71,11 @@ WAM-2layers v2.2.0.1
 List of papers that use WAM-2layers or earlier versions of the WAM:
 
 Please see:
+
 "Van der Ent, R. J. (2014), A new view on the hydrological cycle over continents, Ph.D. thesis, 96 pp, Delft University of Technology, Delft. 
 http://dx.doi.org/10.4233/uuid:0ab824ee-6956-4cc3-b530-3245ab4f32be."
 
-and the upcoming PhD thesis of Patrick W. Keys at Stockholm University
+"Keys, P. W. (2016), The Precipitationshed – Methods, Concepts, and Applications, Ph.D. thesis, Stockholm University, Stockholm.
+http://su.diva-portal.org/smash/get/diva2:951928/FULLTEXT01.pdf"
 
-
+and the references therein

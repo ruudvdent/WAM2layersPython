@@ -16,4 +16,5 @@ Name			- affiliation								- current version in use
 8.  Delphine Clara Zemp	- University of Göttingen (previously at PIK)				- WAM-2layers v2.3.02 (matlab)
 9.  Deliang Chen	- University of Gothenburg						- own code based on WAM papers
 10. Tongtiegang Zhao	- CSIRO (previously at Tsinghua University)				- own code based on WAM papers
+11. Rúben Molina 	- University of Antioquia						- WAM-2layers v2.4.08 (rmolina/WAM2layersPython)
 
