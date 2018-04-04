@@ -11,9 +11,32 @@ either pre-processing or post-processing and merely provided here as an example 
 as this could lead to a violation of the Courant-criterion and lead to unphysical results. 
 In general one must be aware that using the model on smaller grids may need smaller timesteps than those that are currently in the code. 
 
-Released under the GNU General Public License. Please cite this Github and 
+Released under the GNU General Public License. Please cite:
+
+- This Github page: 
+van der Ent, R. J. (YYYY). WAM2layersPython. Retrieved MONTH DD, YYYY, from https://github.com/ruudvdent/WAM2layersPython
+
+and:
+
+- The most complete model description (which can be found in my dissertation): 
 "Van der Ent, R. J. (2014), A new view on the hydrological cycle over continents, Ph.D. thesis, 96 pp, Delft University of Technology, Delft. 
 http://dx.doi.org/10.4233/uuid:0ab824ee-6956-4cc3-b530-3245ab4f32be."
+
+or: 
+
+- Slightly less complete, but published as a paper:
+"Van der Ent, R. J., Wang-Erlandsson, L., Keys, P. W., & Savenije, H. H. G. (2014). 
+Contrasting roles of interception and transpiration in the hydrological cycle - Part 2: Moisture recycling. 
+Earth System Dynamics, 5(2), 471–489. https://doi.org/10.5194/esd-5-471-2014"
+
+and for specific interest in the time component cite:
+
+"van der Ent, R. J., & Tuinenburg, O. A. (2017). The residence time of water in the atmosphere revisited. 
+Hydrology and Earth System Sciences, 21(2), 779–790. https://doi.org/10.5194/hess-2016-431"
+
+
+3-04-2018
+- updated readme
 
 2-12-2016
 - user list added (please feel free to contribute!)
@@ -77,5 +100,8 @@ http://dx.doi.org/10.4233/uuid:0ab824ee-6956-4cc3-b530-3245ab4f32be."
 
 "Keys, P. W. (2016), The Precipitationshed – Methods, Concepts, and Applications, Ph.D. thesis, Stockholm University, Stockholm.
 http://su.diva-portal.org/smash/get/diva2:951928/FULLTEXT01.pdf"
+
+"Wang-Erlandsson, L. (2017), Root for rain, Ph.D. thesis, Delft University of Technology, Delft.
+http://dx.doi.org/10.4233/uuid:748b66b7-0f95-4978-8ce8-2ebf4bd5ee0b
 
 and the references therein
