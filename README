@@ -1,1 +1,10 @@
-This is an attempt to publish the version of WAM-2Layers used and modified in Uni. Reading UK.
+Versions of WAM-2Layers used and modified in Uni. Reading, UK.
+
+=====
+Con_E_Recyc_Masterscript.py
+-----
+Difference between *Con_E_Recyc_Masterscript.py* here and the same file from *master* branch is the function *get_Sa_track_backward_TIME*.
+Here, *get_Sa_track_backward_TIME* includes diagnosis of distance, *Sa_dist_down* & *Sa_dist_top* (Lines 702-827).
+
+Please modify input parameters, mask and I/O directories, accordingly.
+
