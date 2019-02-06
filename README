@@ -7,4 +7,8 @@ Difference between *Con_E_Recyc_Masterscript.py* here and the same file from *ma
 Here, *get_Sa_track_backward_TIME* includes diagnosis of distance, *Sa_dist_down* & *Sa_dist_top* (Lines 702-827).
 
 Please modify input parameters, mask and I/O directories, accordingly.
+=====
+Con_E_Recyc_Output.py
+-----
+Calculate *E_dist* and output in daily and monthly data.
 
