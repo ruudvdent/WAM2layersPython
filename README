@@ -11,4 +11,16 @@ Please modify input parameters, mask and I/O directories, accordingly.
 Con_E_Recyc_Output.py
 -----
 Calculate *E_dist* and output in daily and monthly data.
-
+=====
+Con_P_Recyc_Masterscript.py
+-----
+Note that, this version of *Con_P_Recyc_Masterscript.py* is quite different from previous ones:
+1. All input/output files are in form of .nc instead of .mat;
+2. NetCDF files are read/wrote using CF-Python (https://cfpython.bitbucket.io/);
+   CF-Python is free and easy to install. However, only Linux system is fully supported (Developing team here in Reading has limited resourse);
+   (If you donot like CF-Python or cannot install on your Windows/Mac laptop, then you could recode this using netCDF4 or let me know.)
+3. Output are daily mean with output on the last timestep of the day to be used in for next day calculation;
+=====
+Con_P_Recyc_Output.py
+-----
+This code try to calculate monthly mean from daily output using CF-Python;
