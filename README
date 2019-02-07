@@ -51,3 +51,4 @@ Caveat
 > I run these codes on a Linux server. However, I have not tested them on other platform;
 > For Windows and Mac users, CF-Python may not work. However, CF-Python developing team suggests to install a Linux Virtual Machine (See 'Other Operating Systems' on http://ajheaps.github.io/cf-plot/download.html)
 > Examples of Cython code are taken from an attempt of caluclating moisture source of a high resolution simulation. These data ar included here.
+> If you are using these codes and encounter error, please send me an email, I will try my best to assist you (l.guo@reading.ac.uk).
