@@ -1,20 +1,25 @@
-﻿USER LIST
+﻿KNOWN USER LIST
 
-Below is a list of all current and past known users of the Water Accounting Model - 2 layers (WAM-2layers) or previous versions.
+Below is a list of all current and past known users of the Water Accounting Model - 2 layers (WAM-2layers) or previous versions. 
+As they are know to me (Ruud van der Ent)
+
 Please feel free to add/change your name and create a pull request.
 
+Name			- affiliation						- version in use (base, many users have adapted parts of the code for their own needs)
 
-Name			- affiliation								- current version in use
-
-1.  Ruud van der Ent	- Utrecht University (previously at Delft University of Technology) 	- WAM-2layers v2.4.08
-2.  Patrick Keys	- Colorado state University & Stockholm University			- WAM-2layers v2.3.02 (matlab)
-3.  Lan-Wang Erlandsson	- Stockholm University & Delft University of Technology			- WAM-2layers v2.3.02 (matlab)
-4.  Bert Coerver	- Unesco IHE								- WAM-2layers v2.4.08
-5.  Liang Guo		- University of Reading							- WAM-2layers v2.4.08
-6.  Sem Vijverberg	- Utrecht University & KNMI						- WAM-2layers v2.4.08
-7.  Kirsten Findell	- Princeton University							- WAM-2layers v2.4.08
-8.  Delphine Clara Zemp	- University of Göttingen (previously at PIK)				- WAM-2layers v2.3.02 (matlab)
-9.  Deliang Chen	- University of Gothenburg						- own code based on WAM papers
-10. Tongtiegang Zhao	- CSIRO (previously at Tsinghua University)				- own code based on WAM papers
-11. Rúben Molina 	- University of Antioquia						- WAM-2layers v2.4.08 (rmolina/WAM2layersPython)
+1.  Ruud van der Ent	- Delft University of Technology			- WAM-2layers v2.4.08
+2.  Patrick Keys	- Colorado state University				- WAM-2layers v2.3.02 (matlab)
+3.  Lan-Wang Erlandsson	- Stockholm University 					- WAM-2layers v2.3.02 (matlab)
+4.  Bert Coerver	- IHE-Delft						- WAM-2layers v2.4.08
+5.  Liang Guo		- University of Reading					- WAM-2layers v2.4.08
+6.  Sem Vijverberg	- Utrecht University & KNMI (now at VU Amsterdam)	- WAM-2layers v2.4.08
+7.  Kirsten Findell	- Princeton University					- WAM-2layers v2.4.08
+8.  Delphine Clara Zemp	- University of Göttingen (previously at PIK)		- WAM-2layers v2.3.02 (matlab)
+9.  Chi Zhang		- Chinese Academy of Sciences, Beijing			- WAM-2layers v2.3.02 (matlab)
+10. Tongtiegang Zhao	- CSIRO (previously at Tsinghua University)		- own code based on WAM papers
+11. Rúben Molina 	- University of Antioquia				- WAM-2layers v2.4.08 (rmolina/WAM2layersPython)
+12. Agnes Prandita	- Wageningen University & Stockholm University		- WAM-2layers v2.4.08
+13. Umbriël Post	- Delft University of Technology			- WAM-2layers v2.4.08
+14. Gaby Gründemann	- Delft University of Technology			- WAM-2layers v2.4.08
+15. Imme Benedict	- Wageningen University					- WAM-2layers v2.4.08
 
