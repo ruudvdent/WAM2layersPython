@@ -24,3 +24,30 @@ Note that, this version of *Con_P_Recyc_Masterscript.py* is quite different from
 Con_P_Recyc_Output.py
 -----
 This code try to calculate monthly mean from daily output using CF-Python;
+=====
+WAM_functions.pyx  WAM_misc.pyx  get_Sa_track_backward.pyx  get_Sa_track_backward_time.pyx
+-----
+.pyx is Cython source file;
+Cython is Python with C data types;
+Note that, *get_Sa_track_backward_time.pyx* is rewrote to allow parallelisation using OpenMP. However, the efficiency of OpenMP need further test;
+=====
+setup.py
+-----
+To compile .pyx, a setup script is needed;
+setup.py is like Python makefile;
+Commmand to build:
+	'python setup.py build_ext --inplace';
+This yields *WAM_functions.so*;
+=====
+Con_E_Recyc_Masterscript_an512_R.py
+-----
+An example script how to include Cython code into WAM-2layers;
+
+
+
+=======
+Caveat
+-------
+> I run these codes on a Linux server. However, I have not tested them on other platform;
+> For Windows and Mac users, CF-Python may not work. However, CF-Python developing team suggests to install a Linux Virtual Machine (See 'Other Operating Systems' on http://ajheaps.github.io/cf-plot/download.html)
+> Examples of Cython code are taken from an attempt of caluclating moisture source of a high resolution simulation. These data ar included here.

@@ -32,8 +32,6 @@ f_out = output_folder+'/'+region+'_source_forward_'+band+'_'+year+'_daily.nc'
 print f_out
 cf.write(f,f_out,single=True)
 
-exit()
-
 if region == 'cn1':
 	E = f.select_field('E',exact=True).collapse('sum',axes='time',group=cf.M())
 	P = f.select_field('P',exact=True).collapse('sum',axes='time',group=cf.M())
