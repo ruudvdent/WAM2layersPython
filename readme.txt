@@ -11,6 +11,10 @@ either pre-processing or post-processing and merely provided here as an example 
 as this could lead to a violation of the Courant-criterion and lead to unphysical results. 
 In general one must be aware that using the model on smaller grids may need smaller timesteps than those that are currently in the code. 
 
+If you are working with climate model data it is probably useful to load at the work by Imme Benedict. She has developed a model version to work 
+with a limited amount of pressure levels (as will be common with climate model output). 
+Smart spline interpolation guarantees a realistically as possible atmospheric moisture profile. See https://github.com/Imme1992/moisture_tracking_mississippi/ 
+
 Released under the GNU General Public License. Please cite:
 
 - This Github page: 
@@ -34,6 +38,8 @@ and for specific interest in the time component cite:
 "van der Ent, R. J., & Tuinenburg, O. A. (2017). The residence time of water in the atmosphere revisited. 
 Hydrology and Earth System Sciences, 21(2), 779–790. https://doi.org/10.5194/hess-2016-431"
 
+5-4-2019
+- added link to Imme Benedict's model version with 5 pressure levels and spline interpolation of the atmospheric moisture profile
 
 3-04-2018
 - updated readme
