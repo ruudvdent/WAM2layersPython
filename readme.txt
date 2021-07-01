@@ -1,6 +1,6 @@
 ﻿RELEASE NOTES
 
-Main developer of the code Ruud van der Ent (r.j.vanderent@uu.nl). Please let me know when you intend to use this code for research, 
+Main developer of the code Ruud van der Ent (r.j.vanderent@tudelft.nl). Please let me know when you intend to use this code for research, 
 I might be able to offer some kind of support if it is in my interest as well, but I cannot guarantee to do any kind of troubleshooting for free
 as I have to work on my own projects as well.
 
@@ -20,18 +20,14 @@ Released under the GNU General Public License. Please cite:
 - This Github page: 
 van der Ent, R. J. (YYYY). WAM2layersPython. Retrieved MONTH DD, YYYY, from https://github.com/ruudvdent/WAM2layersPython
 
-and:
-
-- The most complete model description (which can be found in my dissertation): 
-"Van der Ent, R. J. (2014), A new view on the hydrological cycle over continents, Ph.D. thesis, 96 pp, Delft University of Technology, Delft. 
-http://dx.doi.org/10.4233/uuid:0ab824ee-6956-4cc3-b530-3245ab4f32be."
-
-or: 
-
-- Slightly less complete, but published as a paper:
+and this paper:
 "Van der Ent, R. J., Wang-Erlandsson, L., Keys, P. W., & Savenije, H. H. G. (2014). 
 Contrasting roles of interception and transpiration in the hydrological cycle - Part 2: Moisture recycling. 
 Earth System Dynamics, 5(2), 471–489. https://doi.org/10.5194/esd-5-471-2014"
+
+or the most complete model description (which can be found in my dissertation): 
+"Van der Ent, R. J. (2014), A new view on the hydrological cycle over continents, Ph.D. thesis, 96 pp, Delft University of Technology, Delft. 
+http://dx.doi.org/10.4233/uuid:0ab824ee-6956-4cc3-b530-3245ab4f32be."
 
 and for specific interest in the time component cite:
 
