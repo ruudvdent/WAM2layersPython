@@ -15,7 +15,7 @@ If you are working with climate model data it is probably useful to load at the 
 with a limited amount of pressure levels (as will be common with climate model output). 
 Smart spline interpolation guarantees a realistically as possible atmospheric moisture profile. See https://github.com/Imme1992/moisture_tracking_mississippi/ 
 
-Released under the GNU General Public License. Please cite:
+Released under the Apache2 License. Please cite:
 
 - This Github page: 
 van der Ent, R. J. (YYYY). WAM2layersPython. Retrieved MONTH DD, YYYY, from https://github.com/ruudvdent/WAM2layersPython
