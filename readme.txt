@@ -1,4 +1,8 @@
-﻿RELEASE NOTES
+RELEASE NOTES
+
+This version is not being maintained anymore. The newest version has been moved to: https://github.com/WAM2layers/WAM2layers (but at the moment 24 June 2022 still under heavy development)
+
+---
 
 Main developer of the code Ruud van der Ent (r.j.vanderent@tudelft.nl). Please let me know when you intend to use this code for research, 
 I might be able to offer some kind of support if it is in my interest as well, but I cannot guarantee to do any kind of troubleshooting for free
